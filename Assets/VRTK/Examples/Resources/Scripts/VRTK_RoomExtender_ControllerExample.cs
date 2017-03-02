@@ -16,14 +16,14 @@
             }
             if (FindObjectOfType<VRTK_RoomExtender>() == null)
             {
-                Debug.LogError("VRTK_RoomExtender is required to be attached to the CameraRig that has the VRTK_RoomExtender script attached to it");
+                Debug.LogError("VRTK_RoomExtender script is required.");
                 return;
             }
             roomExtender = FindObjectOfType<VRTK_RoomExtender>();
             //Setup controller event listeners
             GetComponent<VRTK_ControllerEvents>().TouchpadPressed += new ControllerInteractionEventHandler(DoTouchpadPressed);
             GetComponent<VRTK_ControllerEvents>().TouchpadReleased += new ControllerInteractionEventHandler(DoTouchpadReleased);
-            GetComponent<VRTK_ControllerEvents>().ApplicationMenuPressed += new ControllerInteractionEventHandler(DoApplicationMenuPressed);
+            GetComponent<VRTK_ControllerEvents>().ButtonOnePressed += new ControllerInteractionEventHandler(DoSwitchMovementFunction);
         }
 
         private void DoTouchpadPressed(object sender, ControllerInteractionEventArgs e)
@@ -51,7 +51,7 @@
             }
         }
 
-        private void DoApplicationMenuPressed(object sender, ControllerInteractionEventArgs e)
+        private void DoSwitchMovementFunction(object sender, ControllerInteractionEventArgs e)
         {
             switch (roomExtender.movementFunction)
             {

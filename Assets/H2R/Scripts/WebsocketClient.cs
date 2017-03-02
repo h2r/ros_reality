@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEditor;
 using WebSocketSharp;
+using System;
 using System.Threading;
+using System.Collections;
+using System.Collections.Generic;
 
 
 public class WebsocketClient : MonoBehaviour
@@ -9,9 +12,12 @@ public class WebsocketClient : MonoBehaviour
 
 	private WebSocket ws;
 	private int counter = 1;
-	public string message;
-	// Use this for initialization
-	void Start ()
+	//public string message;
+	private bool connected = false;
+	public Dictionary<string, string> messages = new Dictionary<string, string>();
+
+
+	void Awake () // putting this stuff inside Start was giving me errors. Other scripts were trying to use the client before it had connected
 	{
 		ws = new WebSocket("ws://138.16.160.16:9090");
 
@@ -20,22 +26,33 @@ public class WebsocketClient : MonoBehaviour
 		ws.OnClose += OnCloseHandler;
 
 		ws.ConnectAsync();
-		Thread.Sleep(1000);
-		//Subscribe ("ros_unity", "std_msgs/String");
+		//ws.Connect ();
 	}
 
-	public void Subscribe(string topic, string type)
+	void OnApplicationQuit() {
+		ws.CloseAsync();
+	}
+
+
+	public void Subscribe(string topic, string type, string compression, int throttle_rate)
 	{
-		string message = "{\"op\":\"subscribe\",\"id\":\"subscribe:/" + topic + ":" + counter + "\",\"type\":\"" + type + "\",\"topic\":\"/" + topic + "\",\"compression\":\"none\",\"throttle_rate\":0,\"queue_length\":0}";
-		ws.SendAsync(message, OnSendComplete);
+		string msg = "{\"op\":\"subscribe\",\"id\":\"subscribe:/" + topic + ":" + counter + "\",\"type\":\"" + type + "\",\"topic\":\"/" + topic + "\",\"compression\":\"" + compression + "\",\"throttle_rate\":" + throttle_rate.ToString() + ",\"queue_length\":0}";
+		Debug.Log (msg);
+		ws.SendAsync(msg, OnSendComplete);
 		counter++;
+	}
+
+	public void Unsubscribe(string topic) {
+		string msg = "{\"op\":\"unsubscribe\",\"id\":\"unsubscribe:/" + topic + ":" + counter + "\",\"topic\":\"" + topic + "\"}";
+		Debug.Log (msg);
+		ws.SendAsync (msg, OnSendComplete);
 	}
 
 	public void Advertise(string topic, string type)
 	{
-		string message = "{\"op\":\"advertise\",\"id\":\"advertise:/" + topic + ":" + counter + "\",\"type\":\"" + type + "\",\"topic\":\"/" + topic + "\",\"latch\":false,\"queue_size\":0}";
-		Debug.Log (message);
-		ws.SendAsync(message, OnSendComplete);
+		string msg = "{\"op\":\"advertise\",\"id\":\"advertise:/" + topic + ":" + counter + "\",\"type\":\"" + type + "\",\"topic\":\"/" + topic + "\",\"latch\":false,\"queue_size\":0}";
+		Debug.Log (msg);
+		ws.SendAsync(msg, OnSendComplete);
 		counter++;
 
 	}
@@ -54,25 +71,32 @@ public class WebsocketClient : MonoBehaviour
 
 	private void OnMessageHandler(object sender, MessageEventArgs e)
 	{
-		//Debug.Log("WebSocket server said: " + e.Data);
-		message = e.Data;
-		//setBaxterTransform(e.Data);
-		//Thread.Sleep(10);
+		string[] input = e.Data.Split (new char[] { ',' }, 2);
+		string topic = input [0].Substring (12).Replace("\"", "");
+		string data = input [1].Split(new string[] { "data" }, StringSplitOptions.None)[1];
+		data = data.Substring (4);
+		data = data.Split('"')[0];
+		messages [topic] = data;
 	}
 
 	private void OnOpenHandler(object sender, System.EventArgs e)
 	{
 		Debug.Log("WebSocket connected!");
+		connected = true;
 	}
 
 	private void OnCloseHandler(object sender, CloseEventArgs e)
 	{
-		Debug.Log("WebSocket closed with reason: " + e.Reason);
+		Debug.Log("WebSocket closed");
 	}
 
 	private void OnSendComplete(bool success)
 	{
 		//Debug.Log("Message sent successfully? " + success);
+	}
+
+	public bool IsConnected() {
+		return connected;
 	}
 }
 

@@ -35,12 +35,12 @@ public class URDFConverter : MonoBehaviour {
 				string meshfile = relativePath + pair.Value.getMeshFile ().Split (delims, 5) [4].Split (delims2) [0];
 				GameObject instance = Instantiate (Resources.Load (meshfile, typeof(GameObject))) as GameObject;
 				instance.name = pair.Key;
-				instance.transform.position += new Vector3 (0f, 0.5f, 0f);
+				//instance.transform.position += new Vector3 (0f, 1.0f, 0f);
 				//foreach (Transform meshObject in instance.transform) {
 				//	meshObject.rotation = Quaternion.identity;
 				//}
 			} else {
-				GameObject instance = new GameObject (pair.Key); // we do this because there are some empty links that only serve to attach other things together (ex: right_arm_mount)
+				//GameObject instance = new GameObject (pair.Key); // we do this because there are some empty links that only serve to attach other things together (ex: right_arm_mount)
 			}
 
 
@@ -53,12 +53,12 @@ public class URDFConverter : MonoBehaviour {
 
 		//Create parent heirachy for gameobjects based on joints
 
-//		foreach (KeyValuePair<string, Joint> pair in jointDict) {
-//			Joint curJoint = pair.Value;
-//			GameObject child = GameObject.Find (curJoint.getChildLink ().getName ());
-//			GameObject parent = GameObject.Find (curJoint.getParentLink ().getName ());
+		foreach (KeyValuePair<string, Joint> pair in jointDict) {
+			Joint curJoint = pair.Value;
+			GameObject child = GameObject.Find (curJoint.getChildLink ().getName ());
+			GameObject parent = GameObject.Find (curJoint.getParentLink ().getName ());
 //			Debug.Log (((Joint)pair.Value).toString());
-//			child.transform.SetParent (parent.transform);
+	//		child.transform.SetParent (parent.transform);
 //			Debug.Log("initial LP:" + child.transform.localPosition.ToString() + " joint LP:" + RosToUnityPositionAxisConversion(curJoint.getXyz ()).ToString() + " link LP:" + RosToUnityPositionAxisConversion(curJoint.getChildLink ().getXyz ()).ToString());
 //			child.transform.localPosition = RosToUnityPositionAxisConversion(curJoint.getXyz ());
 //			child.transform.localPosition += RosToUnityPositionAxisConversion(curJoint.getChildLink ().getXyz ());
@@ -70,7 +70,7 @@ public class URDFConverter : MonoBehaviour {
 //
 //
 //
-//		}
+		}
 	}
 
 	Vector3 RosToUnityPositionAxisConversion(Vector3 rosIn) 
@@ -211,8 +211,7 @@ public class URDFConverter : MonoBehaviour {
 
 					foreach (XmlNode visualComp in visualComponents) //loop through visual components: origin and geometr 
 					{
-						if (visualComp.Name == "origin") 
-						{
+						if (visualComp.Name == "origin") {
 							//Debug.Log (visualComp.Attributes ["rpy"].Value);
 							string[] rpyVals = visualComp.Attributes ["rpy"].Value.Split (delims);
 							lo_rpy = new Vector3 (float.Parse (rpyVals [0]), float.Parse (rpyVals [1]), float.Parse (rpyVals [2]));
@@ -224,23 +223,26 @@ public class URDFConverter : MonoBehaviour {
 							lo_xyz = new Vector3 (float.Parse (xyzVals [0]), float.Parse (xyzVals [1]), float.Parse (xyzVals [2]));
 							lo_xyzF = true;
 							//lo_xyz = visualComp.Attributes ["xyz"].Value;
-						}
-						else if (visualComp.Name == "geometry")
-						{ //get inside mesh
-							XmlNode mesh = visualComp.FirstChild;
-							if (mesh.Name == "mesh") 
-							{
-								//Debug.Log (mesh.Attributes ["filename"].Value);
-								lmeshfile = mesh.Attributes ["filename"].Value;
+						} else if (visualComp.Name == "geometry") { //get inside mesh
+							foreach (XmlNode child in visualComp) {
+								if (child.Name == "mesh") {
+									//Debug.Log (mesh.Attributes ["filename"].Value);
+									lmeshfile = child.Attributes ["filename"].Value;
+								}
 							}
 						}
 						else if (visualComp.Name == "material") 
 						{
-							XmlNode materialColor = visualComp.FirstChild;
+							//WAS HERE BEFORE
+							//XmlNode materialColor = visualComp.FirstChild;
+
 							//Debug.Log (materialColor.Attributes ["rgba"].Value);
 							//lmaterial = materialColor.Attributes ["rgba"].Value;
-							string[] rgbaVals = materialColor.Attributes ["rgba"].Value.Split (delims);
-							lmaterial = new Vector4 (float.Parse (rgbaVals [0]), float.Parse (rgbaVals [1]), float.Parse (rgbaVals [2]),float.Parse (rgbaVals [3]));
+							//WAS HERE BEFORE
+							//string[] rgbaVals = materialColor.Attributes ["rgba"].Value.Split (delims);
+							//lmaterial = new Vector4 (float.Parse (rgbaVals [0]), float.Parse (rgbaVals [1]), float.Parse (rgbaVals [2]),float.Parse (rgbaVals [3]));
+							//WAS HERE BEFORE
+							lmaterial = new Vector4(1,1,1,1);
 							lmaterialF = true;
 						}
 					}

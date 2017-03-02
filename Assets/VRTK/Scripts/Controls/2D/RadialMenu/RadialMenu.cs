@@ -8,7 +8,7 @@ namespace VRTK
     using UnityEngine.UI;
     using UnityEngine.EventSystems;
 
-    public delegate void HapticPulseEventHandler(ushort strength);
+    public delegate void HapticPulseEventHandler(float strength);
 
     /// <summary>
     /// This adds a UI element into the world space that can be dropped into a Controller object and used to create and use Radial Menus from the touchpad.
@@ -29,6 +29,8 @@ namespace VRTK
         public List<RadialMenuButton> buttons;
         [Tooltip("The base for each button in the menu, by default set to a dynamic circle arc that will fill up a portion of the menu.")]
         public GameObject buttonPrefab;
+        [Tooltip("If checked, then the buttons will be auto generated on awake.")]
+        public bool generateOnAwake = true;
         [Tooltip("Percentage of the menu the buttons should fill, 1.0 is a pie slice, 0.1 is a thin ring.")]
         [Range(0f, 1f)]
         public float buttonThickness = 0.5f;
@@ -50,8 +52,8 @@ namespace VRTK
         [Tooltip("Whether the button action should happen when the button is released, as opposed to happening immediately when the button is pressed.")]
         public bool executeOnUnclick;
         [Tooltip("The base strength of the haptic pulses when the selected button is changed, or a button is pressed. Set to zero to disable.")]
-        [Range(0, 1599)]
-        public ushort baseHapticStrength;
+        [Range(0, 1)]
+        public float baseHapticStrength;
 
         public event HapticPulseEventHandler FireHapticPulse;
 
@@ -73,7 +75,10 @@ namespace VRTK
                 {
                     transform.localScale = Vector3.zero;
                 }
-                RegenerateButtons();
+                if (generateOnAwake)
+                {
+                    RegenerateButtons();
+                }
             }
         }
 
@@ -95,7 +100,7 @@ namespace VRTK
         {
             //Get button ID from angle
             float buttonAngle = 360f / buttons.Count; //Each button is an arc with this angle
-            angle = mod((angle + offsetRotation), 360); //Offset the touch coordinate with our offset
+            angle = mod((angle + -offsetRotation), 360); //Offset the touch coordinate with our offset
 
             int buttonID = (int)mod(((angle + (buttonAngle / 2f)) / buttonAngle), buttons.Count); //Convert angle into ButtonID (This is the magic)
             var pointer = new PointerEventData(EventSystem.current); //Create a new EventSystem (UI) Event
@@ -109,7 +114,7 @@ namespace VRTK
                 if (executeOnUnclick && currentPress != -1)
                 {
                     ExecuteEvents.Execute(menuButtons[buttonID], pointer, ExecuteEvents.pointerDownHandler);
-                    AttempHapticPulse((ushort)(baseHapticStrength * 1.666f));
+                    AttempHapticPulse(baseHapticStrength * 1.666f);
                 }
             }
             if (evt == ButtonEvent.click) //Click button if click, and keep track of current press (executes button action)
@@ -119,7 +124,7 @@ namespace VRTK
                 if (!executeOnUnclick)
                 {
                     buttons[buttonID].OnClick.Invoke();
-                    AttempHapticPulse((ushort)(baseHapticStrength * 2.5f));
+                    AttempHapticPulse(baseHapticStrength * 2.5f);
                 }
             }
             else if (evt == ButtonEvent.unclick) //Clear press id to stop invoking OnHold method (hide menu)
@@ -129,7 +134,7 @@ namespace VRTK
 
                 if (executeOnUnclick)
                 {
-                    AttempHapticPulse((ushort)(baseHapticStrength * 2.5f));
+                    AttempHapticPulse(baseHapticStrength * 2.5f);
                     buttons[buttonID].OnClick.Invoke();
                 }
             }
@@ -237,7 +242,7 @@ namespace VRTK
             StopCoroutine("TweenMenuScale");
         }
 
-        private void AttempHapticPulse(ushort strength)
+        private void AttempHapticPulse(float strength)
         {
             if (strength > 0 && FireHapticPulse != null)
             {

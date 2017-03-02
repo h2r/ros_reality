@@ -9,8 +9,8 @@
         public float pullMultiplier;
         public float pullOffset;
         public float maxPullDistance = 1.1f;
-        public int bowVibration = 250;
-        public int stringVibration = 350;
+        public float bowVibration = 0.062f;
+        public float stringVibration = 0.087f;
 
         private BowAnimation bowAnimation;
         private GameObject currentArrow;
@@ -61,7 +61,7 @@
 
         private void DoObjectGrab(object sender, InteractableObjectEventArgs e)
         {
-            if (VRTK_SDK_Bridge.IsControllerLeftHand(e.interactingObject))
+            if (VRTK_DeviceFinder.IsControllerLeftHand(e.interactingObject))
             {
                 holdControl = VRTK_DeviceFinder.GetControllerLeftHand().GetComponent<VRTK_ControllerEvents>();
                 stringControl = VRTK_DeviceFinder.GetControllerRightHand().GetComponent<VRTK_ControllerEvents>();
@@ -172,8 +172,8 @@
 
             if (!currentPull.ToString("F2").Equals(previousPull.ToString("F2")))
             {
-                holdActions.TriggerHapticPulse((ushort)bowVibration);
-                stringActions.TriggerHapticPulse((ushort)stringVibration);
+                holdActions.TriggerHapticPulse(bowVibration);
+                stringActions.TriggerHapticPulse(stringVibration);
             }
             previousPull = currentPull;
         }

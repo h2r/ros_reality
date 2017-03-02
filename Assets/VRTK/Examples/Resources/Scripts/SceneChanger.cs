@@ -35,7 +35,7 @@
                 return false;
             }
 
-            if (canPress && VRTK_SDK_Bridge.IsTriggerPressedOnIndex(controllerIndex) && VRTK_SDK_Bridge.IsGripPressedOnIndex(controllerIndex) && VRTK_SDK_Bridge.IsApplicationMenuPressedOnIndex(controllerIndex))
+            if (canPress && VRTK_SDK_Bridge.IsTriggerPressedOnIndex(controllerIndex) && VRTK_SDK_Bridge.IsGripPressedOnIndex(controllerIndex) && VRTK_SDK_Bridge.IsButtonOnePressedOnIndex(controllerIndex))
             {
                 return true;
             }
@@ -49,7 +49,7 @@
 
         private void Update()
         {
-            var rightHand = VRTK_DeviceFinder.GetControllerRightHand();
+            var rightHand = VRTK_DeviceFinder.GetControllerRightHand(true);
             controllerIndex = VRTK_DeviceFinder.GetControllerIndex(rightHand);
             if (ForwardPressed() || Input.GetKeyUp(KeyCode.Space))
             {

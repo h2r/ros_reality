@@ -11,7 +11,7 @@ public class PointCloudManager : MonoBehaviour {
 
 	// GUI
 	private float progress = 0;
-	private string guiText;
+	private string guiTextMessage;
 	private bool loaded = false;
 
 	// PointCloud
@@ -110,7 +110,7 @@ public class PointCloudManager : MonoBehaviour {
 			// GUI
 			progress = i *1.0f/(numPoints-1)*1.0f;
 			if (i%Mathf.FloorToInt(numPoints/20) == 0){
-				guiText=i.ToString() + " out of " + numPoints.ToString() + " loaded";
+				guiTextMessage=i.ToString() + " out of " + numPoints.ToString() + " loaded";
 				yield return null;
 			}
 		}
@@ -124,7 +124,7 @@ public class PointCloudManager : MonoBehaviour {
 		for (int i = 0; i < numPointGroups-1; i ++) {
 			InstantiateMesh (i, limitPoints);
 			if (i%10==0){
-				guiText = i.ToString() + " out of " + numPointGroups.ToString() + " PointGroups loaded";
+				guiTextMessage = i.ToString() + " out of " + numPointGroups.ToString() + " PointGroups loaded";
 				yield return null;
 			}
 		}
@@ -206,7 +206,7 @@ public class PointCloudManager : MonoBehaviour {
 
 		if (!loaded){
 			GUI.BeginGroup (new Rect(Screen.width/2-100, Screen.height/2, 400.0f, 20));
-			GUI.Box (new Rect (0, 0, 200.0f, 20.0f), guiText);
+			GUI.Box (new Rect (0, 0, 200.0f, 20.0f), guiTextMessage);
 			GUI.Box (new Rect (0, 0, progress*200.0f, 20), "");
 			GUI.EndGroup ();
 		}

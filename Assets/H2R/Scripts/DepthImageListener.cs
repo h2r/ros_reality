@@ -15,13 +15,13 @@ public class DepthImageListener : MonoBehaviour {
 	int width = 640;
 	int height = 480;
 	//byte[] image;
-	Renderer renderer;
+	Renderer rend;
 	// Use this for initialization
 	void Start () {
 		texture = new Texture2D(width, height, TextureFormat.ARGB4444, false);
-		renderer = GetComponent<Renderer> ();
-		renderer.material.mainTexture = texture;
-		renderer.material.SetTextureScale ("_MainTex", new Vector2 (-1, 1));
+		rend = GetComponent<Renderer> ();
+		rend.material.mainTexture = texture;
+		rend.material.SetTextureScale ("_MainTex", new Vector2 (-1, 1));
 		material.mainTexture = texture;
 		//image = new byte[85151];
 		GameObject wso = GameObject.FindWithTag ("WebsocketTag");

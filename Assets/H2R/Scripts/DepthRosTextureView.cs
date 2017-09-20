@@ -15,7 +15,7 @@ public class DepthRosTextureView : MonoBehaviour {
 	int height = 424;
 
 	Matrix4x4 m;
-	Renderer renderer;
+	Renderer rend;
 
 	// Use this for initialization
 	void Start () 

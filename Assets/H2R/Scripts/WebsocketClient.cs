@@ -15,17 +15,22 @@ public class WebsocketClient : MonoBehaviour
 	//public string message;
 	private bool connected = false;
 	public Dictionary<string, string> messages = new Dictionary<string, string>();
-
-
-	void Awake () // putting this stuff inside Start was giving me errors. Other scripts were trying to use the client before it had connected
+    public string ip_address;
+    // "ws://138.16.160.16:9090" this is the address for iorek
+    // ws://138.16.160.221:5678 this is the address for ursula
+    // ws://128.30.25.147:9090
+    void Awake () // putting this stuff inside Start was giving me errors. Other scripts were trying to use the client before it had connected
 	{
-		ws = new WebSocket("ws://138.16.160.16:9090");
+        Debug.Log("instantiating websocket");
+		ws = new WebSocket(ip_address);
 
 		ws.OnOpen += OnOpenHandler;
 		ws.OnMessage += OnMessageHandler;
 		ws.OnClose += OnCloseHandler;
 
+        Debug.Log("Connecting to websocket");
 		ws.ConnectAsync();
+
 		//ws.Connect ();
 	}
 

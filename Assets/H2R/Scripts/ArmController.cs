@@ -17,9 +17,7 @@ public class ArmController : MonoBehaviour
 
 		GameObject wso = GameObject.FindWithTag ("WebsocketTag");
 		wsc = wso.GetComponent<WebsocketClient> ();
-		//while (!wsc.IsConnected ()) {
 
-		//}
 		wsc.Advertise ("ein/" + arm + "/forth_commands", "std_msgs/String");
 		InvokeRepeating ("sendControls", .1f, .1f);
 		controller = this.GetComponent<VRTK.VRTK_ControllerEvents>();
@@ -30,15 +28,15 @@ public class ArmController : MonoBehaviour
 	void sendControls()
 	{
 		scale = TFListener.scale;
-
+        
 		Vector3 outPos = UnityToRosPositionAxisConversion (tf.position) / scale;
 		Quaternion outQuat = UnityToRosRotationAxisConversion (tf.rotation);
-		//Quaternion outQuat = new Quaternion(0, 1, 0, 0);
 		string message = "";
 		//Allows movement control with controllers if menu is disabled
 
 			if (controller.gripPressed) {
-				message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+				message = outPos.x + " " + outPos.y + " " + outPos.z + " " + 
+                outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
 			} else if (controller.touchpadPressed) {
 				float angle = controller.GetTouchpadAxisAngle ();
 

@@ -10,14 +10,14 @@ public class CameraListener : MonoBehaviour {
 	public int framerate = 15;
 	public string compression = "none"; //"png" is the other option, haven't tried it yet though
 
-	Renderer renderer;
+	Renderer rend;
 	Texture2D texture;
 
 	// Use this for initialization
 	void Start () {
-		renderer = GetComponent<Renderer> ();
+		rend = GetComponent<Renderer> ();
 		texture = new Texture2D(2, 2);
-		renderer.material.mainTexture = texture;
+		rend.material.mainTexture = texture;
 
 		GameObject wso = GameObject.FindWithTag ("WebsocketTag");
 		wsc = wso.GetComponent<WebsocketClient> ();

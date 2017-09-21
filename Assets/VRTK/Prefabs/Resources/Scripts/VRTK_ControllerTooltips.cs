@@ -155,7 +155,7 @@ namespace VRTK
 
             for (int i = 0; i < availableButtons.Length; i++)
             {
-                buttonTooltips[i] = transform.FindChild(availableButtons[i].ToString()).GetComponent<VRTK_ObjectTooltip>();
+                buttonTooltips[i] = transform.Find(availableButtons[i].ToString()).GetComponent<VRTK_ObjectTooltip>();
             }
 
             InitialiseTips();
@@ -316,7 +316,7 @@ namespace VRTK
                 {
                     var controllerHand = VRTK_DeviceFinder.GetControllerHand(controllerActions.gameObject);
                     var elementPath = VRTK_SDK_Bridge.GetControllerElementPath(findElement, controllerHand, true);
-                    returnTransform = modelController.transform.FindChild(elementPath);
+                    returnTransform = modelController.transform.Find(elementPath);
                 }
             }
 

@@ -95,7 +95,7 @@ namespace VRTK
 
         private void CreateDraggablePanel(Canvas canvas, Vector2 canvasSize)
         {
-            if (canvas && !canvas.transform.FindChild(CANVAS_DRAGGABLE_PANEL))
+            if (canvas && !canvas.transform.Find(CANVAS_DRAGGABLE_PANEL))
             {
                 var draggablePanel = new GameObject(CANVAS_DRAGGABLE_PANEL);
                 draggablePanel.transform.SetParent(canvas.transform);
@@ -114,7 +114,7 @@ namespace VRTK
         private void CreateActivator(Canvas canvas, Vector2 canvasSize)
         {
             //if autoActivateWithinDistance is greater than 0 then create the front collider sub object
-            if (autoActivateWithinDistance > 0f && canvas && !canvas.transform.FindChild(ACTIVATOR_FRONT_TRIGGER_GAMEOBJECT))
+            if (autoActivateWithinDistance > 0f && canvas && !canvas.transform.Find(ACTIVATOR_FRONT_TRIGGER_GAMEOBJECT))
             {
                 var canvasRectTransform = canvas.GetComponent<RectTransform>();
                 Vector2 pivot = canvasRectTransform.pivot;
@@ -172,13 +172,13 @@ namespace VRTK
                 Destroy(canvasRigidBody);
             }
 
-            var draggablePanel = canvas.transform.FindChild(CANVAS_DRAGGABLE_PANEL);
+            var draggablePanel = canvas.transform.Find(CANVAS_DRAGGABLE_PANEL);
             if (draggablePanel)
             {
                 Destroy(draggablePanel.gameObject);
             }
 
-            var frontTrigger = canvas.transform.FindChild(ACTIVATOR_FRONT_TRIGGER_GAMEOBJECT);
+            var frontTrigger = canvas.transform.Find(ACTIVATOR_FRONT_TRIGGER_GAMEOBJECT);
             if (frontTrigger)
             {
                 Destroy(frontTrigger.gameObject);

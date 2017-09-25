@@ -14,9 +14,7 @@ public class TFListener : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
-        //Debug.Log(RosToUnityPositionAxisConversion(new Vector3(0.666f, -0.601f, -0.042f)));
-        GameObject wso = GameObject.FindWithTag ("WebsocketTag");
-		wsc = wso.GetComponent<WebsocketClient> ();
+        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", "none", 0);
 
 		//Attach table stuff

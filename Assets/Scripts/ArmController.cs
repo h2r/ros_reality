@@ -1,75 +1,88 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System.Threading;
 
-public class ArmController : MonoBehaviour
-{
-	public string arm;
-	private WebsocketClient wsc;
-	private VRTK.VRTK_ControllerEvents controller;
-	TFListener TFListener;
-	float scale;
+public class ArmController : MonoBehaviour {
+    // string of which arm to control. Valid values are "left" and "right"
+    public string arm;
+    //websocket client connected to ROS network
+    private WebsocketClient wsc;
+    private VRTK.VRTK_ControllerEvents controller;
+    TFListener TFListener;
+    //scale represents how resized the virtual robot is
+    float scale;
 
-	// Use this for initialization
-	void Start ()
-	{
+    void Start() {
+        // Get the live websocket client
+        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 
-		GameObject wso = GameObject.FindWithTag ("WebsocketTag");
-		wsc = wso.GetComponent<WebsocketClient> ();
+        // Get the live TFListener
+        TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
 
-		wsc.Advertise ("ein/" + arm + "/forth_commands", "std_msgs/String");
-		InvokeRepeating ("sendControls", .1f, .1f);
-		controller = GetComponent<VRTK.VRTK_ControllerEvents>();
+        // Get the controller componenet of this gameobject
+        controller = GetComponent<VRTK.VRTK_ControllerEvents>();
 
-		TFListener = GameObject.Find ("TFListener").GetComponent<TFListener> ();
-	}
+        // Create publisher to the Baxter's arm topic (uses Ein)
+        wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
+        // Asychrononously call sendControls every .1 seconds
+        InvokeRepeating("SendControls", .1f, .1f);
+    }
 
-	void sendControls()
-	{
-		scale = TFListener.scale;
-        
-		Vector3 outPos = UnityToRosPositionAxisConversion(GetComponent<Transform>().position) / scale;
-		Quaternion outQuat = UnityToRosRotationAxisConversion (GetComponent<Transform>().rotation);
-		string message = "";
-		//Allows movement control with controllers if menu is disabled
+    void SendControls() {
+        scale = TFListener.scale;
 
-			if (controller.gripPressed) {
-				message = outPos.x + " " + outPos.y + " " + outPos.z + " " + 
-                outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
-			} else if (controller.touchpadPressed) {
-				float angle = controller.GetTouchpadAxisAngle ();
+        //Convert the Unity position of the hand controller to a ROS position (scaled)
+        Vector3 outPos = UnityToRosPositionAxisConversion(GetComponent<Transform>().position) / scale;
+        //Convert the Unity rotation of the hand controller to a ROS rotation (scaled, quaternions)
+        Quaternion outQuat = UnityToRosRotationAxisConversion(GetComponent<Transform>().rotation);
+        //construct the Ein message to be published
+        string message = "";
+        //Allows movement control with controllers if menu is disabled
 
-				if (angle >= 45 && angle < 135) // touching right
-					message += " yDown ";
-				else if (angle >= 135 && angle < 225) // touching bottom
-					message += " xDown ";
-				else if (angle >= 225 && angle < 315) // touching left
-					message += " yUp ";
-				else //touching top
-					message += " xUp ";
-			}
-			if (controller.triggerPressed) {
-				message += " openGripper ";
-			} else {
-				message += " closeGripper ";
-			}
+        //if deadman switch held in, move to new pose
+        if (controller.gripPressed) {
+            //construct message to move to new pose for the robot end effector 
+            message = outPos.x + " " + outPos.y + " " + outPos.z + " " +
+            outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+            //if touchpad is pressed (Crane game), incrementally move in new direction
+        }
+        else if (controller.touchpadPressed) {
+            //get the angle contact point on touch pad
+            float angle = controller.GetTouchpadAxisAngle();
 
-			wsc.SendEinMessage (message, arm);
-		
-		//Debug.Log(arm+":"+message);
-	}
+            //Con
+            if (angle >= 45 && angle < 135) // touching right
+                message += " yDown ";
+            else if (angle >= 135 && angle < 225) // touching bottom
+                message += " xDown ";
+            else if (angle >= 225 && angle < 315) // touching left
+                message += " yUp ";
+            else //touching top
+                message += " xUp ";
+        }
+        //If trigger pressed, open the gripper. Else, close gripper
+        if (controller.triggerPressed) {
+            message += " openGripper ";
+        }
+        else {
+            message += " closeGripper ";
+        }
 
-	Vector3 UnityToRosPositionAxisConversion(Vector3 rosIn) 
-	{
-		return new Vector3 (-rosIn.x, -rosIn.z, rosIn.y);	
-	}
+        //Send the message to the websocket client (i.e: publish message onto ROS network)
+        wsc.SendEinMessage(message, arm);
 
-	Quaternion UnityToRosRotationAxisConversion(Quaternion qIn) 
-	{
+        //Debug.Log(arm+":"+message);
+    }
 
-		Quaternion temp = (new Quaternion (qIn.x, qIn.z, -qIn.y, qIn.w))*(new Quaternion(0,1,0,0));
-		return temp;
-	}
+    //Convert 3D Unity position to ROS position 
+    Vector3 UnityToRosPositionAxisConversion(Vector3 rosIn) {
+        return new Vector3(-rosIn.x, -rosIn.z, rosIn.y);
+    }
+
+    //Convert 4D Unity quaternion to ROS quaternion
+    Quaternion UnityToRosRotationAxisConversion(Quaternion qIn) {
+
+        Quaternion temp = (new Quaternion(qIn.x, qIn.z, -qIn.y, qIn.w)) * (new Quaternion(0, 1, 0, 0));
+        return temp;
+    }
 
 }
 

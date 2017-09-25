@@ -24,8 +24,7 @@ public class DepthImageListener : MonoBehaviour {
 		rend.material.SetTextureScale ("_MainTex", new Vector2 (-1, 1));
 		material.mainTexture = texture;
 		//image = new byte[85151];
-		GameObject wso = GameObject.FindWithTag ("WebsocketTag");
-		wsc = wso.GetComponent<WebsocketClient> ();
+		wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 		topic = "openni/depth_registered/hw_registered/image_rect_raw";
 		wsc.Subscribe (topic, "sensor_msgs/Image", compression, framerate);
 

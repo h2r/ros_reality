@@ -3,6 +3,7 @@ using System.Collections;
 using System.Threading;
 
 public class TrajectoryController : MonoBehaviour {
+
     public string arm;
     public GameObject targetModel;
     Transform tf;
@@ -28,43 +29,45 @@ public class TrajectoryController : MonoBehaviour {
         controller = GetComponent<VRTK.VRTK_ControllerEvents>();
         TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
         tf = GetComponent<Transform>();
+
+        //last positions/rotation of the controller (calculate relative displacement of controller at each update)
         lastControllerPosition = tf.position;
         lastControllerRotation = tf.rotation;
-        Invoke("FindArm", 1f);
-        InvokeRepeating("sendMessage", 1.2f, .1f);
+        Invoke("FindArm", 1f); //update position of lastArm position and rotation
+        InvokeRepeating("sendMessage", 1.2f, .1f); //send message to move arm by displacement of current controller position/rotation with previous position/rotation
         targetTransform = targetModel.GetComponent<Transform>();
     }
 
-    void FindArm() {
+    void FindArm() { //update the lastArm with the current position/rotation of the controller
         lastArmTF = GameObject.Find(arm + "_gripper_base").GetComponent<Transform>();
         lastArmPosition = lastArmTF.position;
         lastArmRotation = lastArmTF.rotation;
         //Debug.Log(lastArmPosition);
     }
 
-    void sendMessage() {
+    void sendMessage() { //send an ein message to arm
         wsc.SendEinMessage(message, arm);
     }
 
     void Update() {
         scale = TFListener.scale;
 
-        Vector3 deltaPos = tf.position - lastControllerPosition;
+        Vector3 deltaPos = tf.position - lastControllerPosition; //displacement of current controller position to old controller position
         lastControllerPosition = tf.position;
 
-        Quaternion deltaRot = tf.rotation * Quaternion.Inverse(lastControllerRotation);
+        Quaternion deltaRot = tf.rotation * Quaternion.Inverse(lastControllerRotation); //delta of current controller rotation to old controller rotation
         lastControllerRotation = tf.rotation;
 
-        //
+        //message to be sent over ROs network
         message = "";
 
 
         //Allows movement control with controllers if menu is disabled
-        if (controller.gripPressed) {
-            lastArmPosition = lastArmPosition + deltaPos;
-            lastArmRotation = deltaRot * lastArmRotation;
+        if (controller.gripPressed) { //deadman switch being pressed
+            lastArmPosition = lastArmPosition + deltaPos; //new arm position
+            lastArmRotation = deltaRot * lastArmRotation; //new arm rotation
 
-            if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) {
+            if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) { //make sure that the trajectory 
                 targetTransform.position = lastArmPosition;
             }
             targetTransform.rotation = lastArmRotation;

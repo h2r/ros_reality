@@ -11,7 +11,7 @@ public class URDFParser2 : MonoBehaviour {
     Dictionary<string, GameObject> robotParts;
 
     public string xmlPath;
-    string relativePath = "URDFs/PR2/";
+    string relativePath = "URDFs/PR2_decimated/";
 
     public GameObject root;
 

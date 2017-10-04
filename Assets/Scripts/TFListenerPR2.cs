@@ -16,7 +16,7 @@ public class TFListenerPR2 : MonoBehaviour {
         wsc.Subscribe(topic, "std_msgs/String", 0);
 
         //Attach table stuff
-        GameObject basePivot = GameObject.Find("basePivot"); // replace with hashmap
+        GameObject basePivot = GameObject.Find("base_linkPivot"); // replace with hashmap
         GameObject table = GameObject.Find("Table");
         table.transform.SetParent(basePivot.transform); //make table the parent object of the base pivot
         table.transform.localPosition = new Vector3(0f, -.15f, 0f); //new local position
@@ -57,6 +57,8 @@ public class TFListenerPR2 : MonoBehaviour {
                 Quaternion curRot = new Quaternion(rot_x, rot_y, rot_z, rot_w);
 
                 cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion(curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
+                //int len = dataPair[0].Length;
+                //if (dataPair[0].Substring(2, =
                 cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion(curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
                 if (!cur.name.Contains("kinect")) { //rescaling direction of kinect point cloud
                     cur.transform.localScale = new Vector3(scale, scale, scale);
@@ -77,7 +79,12 @@ public class TFListenerPR2 : MonoBehaviour {
 
     //Convert ROS quaternion to Unity Quaternion
     Quaternion RosToUnityQuaternionConversion(Quaternion rosIn) {
-        return new Quaternion(rosIn.x, -rosIn.z, rosIn.y, rosIn.w)* Quaternion.Euler(-90, 0, 0); ;
+        return new Quaternion(rosIn.x, -rosIn.z, rosIn.y, rosIn.w) * Quaternion.Euler(-90, 0, 0); ;
+    }
+
+    //Convert ROS quaternion to Unity Quaternion
+    Quaternion oldRosToUnityQuaternionConversion(Quaternion rosIn) {
+        return new Quaternion(rosIn.x, -rosIn.z, rosIn.y, rosIn.w);
     }
 
 

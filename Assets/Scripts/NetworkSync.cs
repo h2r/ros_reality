@@ -10,10 +10,12 @@ public class NetworkSync : NetworkBehaviour {
     Transform left_tf;
     Transform right_tf; 
 
-    void OnStartLocalPlayer() {
+    public override void OnStartLocalPlayer() {
 
         camera_rig = GameObject.Find("[CameraRig]");
-        
+        head_tf = this.transform.Find("Head");
+        left_tf = this.transform.Find("Left Controller");
+        right_tf = this.transform.Find("Right Controller");
     }
 	
 	// Update is called once per frame
@@ -21,21 +23,20 @@ public class NetworkSync : NetworkBehaviour {
 		if (!isLocalPlayer) {
             return;
         }
-        if (camera_rig == null) {
-            camera_rig = GameObject.Find("[CameraRig]");
-        }
-        head_tf = this.transform.Find("Head");
-        left_tf = this.transform.Find("Left Controller");
-        right_tf = this.transform.Find("Right Controller");
+        //if (camera_rig == null) {
+        //    camera_rig = GameObject.Find("[CameraRig]");
+        //}
+
 
         
-        //head_tf = camera_rig.transform.Find("Camera (eye)");
+        head_tf.position = camera_rig.transform.Find("Camera (eye)").position;
+        head_tf.rotation = camera_rig.transform.Find("Camera (eye)").rotation;
 
     
         //left_tf.position = camera_rig.transform.Find("Controller (left)").position;
         //left_tf.rotation = camera_rig.transform.Find("Controller (left)").rotation;
 
         right_tf.position = camera_rig.transform.Find("Controller (right)").position;
-        //right_tf.rotation = camera_rig.transform.Find("Controller (right)").rotation;
+        right_tf.rotation = camera_rig.transform.Find("Controller (right)").rotation;
     }
 }

@@ -19,10 +19,10 @@ public class TFListener : MonoBehaviour
 
 		//Attach table stuff
 		GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
-		GameObject table = GameObject.Find ("Table");
-		table.transform.SetParent (basePivot.transform); //make table the parent object of the base pivot
-		table.transform.localPosition = new Vector3 (0f, -.15f, 0f); //new local position
-		table.transform.localScale = new Vector3 (0.2123f, 1f, 0.2123f);//local scaling of robot
+		//GameObject table = GameObject.Find ("Table");
+		//table.transform.SetParent (basePivot.transform); //make table the parent object of the base pivot
+		//table.transform.localPosition = new Vector3 (0f, -.15f, 0f); //new local position
+		//table.transform.localScale = new Vector3 (0.2123f, 1f, 0.2123f);//local scaling of robot
 	}
 
 	void Update () 
@@ -31,12 +31,11 @@ public class TFListener : MonoBehaviour
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
         //Debug.Log(string.Join(", ", tfElements));
         foreach (string tfElement in tfElements) {
-            //Debug.Log(tfElement);
             //continue;
 			string[] dataPair = tfElement.Split (':');
 			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"); // replace with hashmap
 			if (cur != null) {
-
+                //Debug.Log(cur);
 				string[] tmp = dataPair [1].Split ('^'); //seperate position from rotation data
 				string pos = tmp [0]; //position data
 				string rot = tmp [1]; //rotation data
@@ -60,16 +59,22 @@ public class TFListener : MonoBehaviour
 				Quaternion curRot = new Quaternion (rot_x, rot_y, rot_z, rot_w);
 
 				cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion (curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
-				cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion (curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
+                if (dataPair[0] == "right_lower_forearm") {
+                    Debug.Log(cur);
+                    Debug.Log(cur.transform.position);
+                    cur.transform.position = new Vector3(5f, 5f, 5f);
+                    Debug.Log(cur.transform.position);
+                }
+                cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion (curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
 				if (!cur.name.Contains("kinect")) { //rescaling direction of kinect point cloud
 					cur.transform.localScale = new Vector3(scale, scale, scale);
 				} else {
 					cur.transform.localScale = new Vector3(-scale, scale, -scale);
 				}
-				//cur.transform.position = RosToUnityPositionAxisConversion (curPos);
-				//cur.transform.rotation = RosToUnityQuaternionConversion (curRot);
-			}
-		}
+                //cur.transform.position = new Vector3(5f,5f,5f);
+                //cur.transform.rotation = RosToUnityQuaternionConversion(curRot);
+            }
+        }
 	}
 
     //convert ROS position to Unity Position

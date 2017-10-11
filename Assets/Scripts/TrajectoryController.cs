@@ -21,13 +21,13 @@ public class TrajectoryController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-
+        Debug.Log("help meh");
         wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
-        controller = GameObject.Find("Controller (" + arm + ")").GetComponent<SteamVR_TrackedController>();
-        TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
-        tf = GetComponent<Transform>();
+        
+        
+        
 
         if (arm == "left") {
             targetModel = GameObject.Find("LeftTargetModel");
@@ -57,14 +57,18 @@ public class TrajectoryController : MonoBehaviour {
     }
 
     void Update() {
+        TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
+        tf = GetComponent<Transform>();
         scale = TFListener.scale;
+        controller = GameObject.Find("Controller (" + arm + ")").GetComponent<SteamVR_TrackedController>();
+
 
         Vector3 deltaPos = tf.position - lastControllerPosition; //displacement of current controller position to old controller position
         lastControllerPosition = tf.position;
 
         Quaternion deltaRot = tf.rotation * Quaternion.Inverse(lastControllerRotation); //delta of current controller rotation to old controller rotation
         lastControllerRotation = tf.rotation;
-
+        
         //message to be sent over ROs network
         message = "";
 

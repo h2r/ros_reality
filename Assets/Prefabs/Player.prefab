@@ -55,6 +55,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4853067196283556}
+  - component: {fileID: 114153296882558826}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Untagged
@@ -109,6 +110,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4361061678405434}
+  - component: {fileID: 114876783208426210}
   m_Layer: 0
   m_Name: Right Controller
   m_TagString: Untagged
@@ -541,6 +543,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &114153296882558826
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1277691714984502}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0bd28e7a462a7409624f2beee5db41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arm: left
 --- !u!114 &114298205446462888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -662,6 +676,18 @@ MonoBehaviour:
   m_MovementThreshold: 0.001
   m_InterpolateRotation: 0.5
   m_InterpolateMovement: 0.5
+--- !u!114 &114876783208426210
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1476505315494790}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da0bd28e7a462a7409624f2beee5db41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arm: right
 --- !u!135 &135442257690086612
 SphereCollider:
   m_ObjectHideFlags: 1

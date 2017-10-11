@@ -71,8 +71,19 @@ public class WebsocketClient : MonoBehaviour {
         string[] input = e.Data.Split(new char[] { ',' }, 2);
         string topic = input[0].Substring(12).Replace("\"", "");
         string data = input[1].Split(new string[] { "data" }, StringSplitOptions.None)[1];
-        data = data.Substring(4);
-        data = data.Split('"')[0];
+        if (topic == "ros_unity")
+        {
+            data = data.Substring(4);
+            data = data.Substring(0, data.Length - 20);
+            data = data.Replace("\\", "");
+            data = data.Replace(@"\", "");
+            //Debug.Log(data);
+        }
+        else
+        {
+            data = data.Substring(4);
+            data = data.Split('"')[0];
+        }
         messages[topic] = data;
         //Debug.Log(data);
     }

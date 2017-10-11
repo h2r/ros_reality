@@ -33,8 +33,8 @@ public class NetworkSync : NetworkBehaviour {
         head_tf.rotation = camera_rig.transform.Find("Camera (eye)").rotation;
 
     
-        //left_tf.position = camera_rig.transform.Find("Controller (left)").position;
-        //left_tf.rotation = camera_rig.transform.Find("Controller (left)").rotation;
+        left_tf.position = camera_rig.transform.Find("Controller (left)").position;
+        left_tf.rotation = camera_rig.transform.Find("Controller (left)").rotation;
 
         right_tf.position = camera_rig.transform.Find("Controller (right)").position;
         right_tf.rotation = camera_rig.transform.Find("Controller (right)").rotation;

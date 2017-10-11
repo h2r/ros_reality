@@ -573,7 +573,7 @@ MonoBehaviour:
   m_Script: {fileID: -1267208747, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Target: {fileID: 4863181511185486}
+  m_Target: {fileID: 4361061678405434}
   m_ChildIndex: 2
   m_SendInterval: 0.05263158
   m_SyncRotationAxis: 7
@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: -1267208747, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Target: {fileID: 4623394885381948}
+  m_Target: {fileID: 4853067196283556}
   m_ChildIndex: 1
   m_SendInterval: 0.05263158
   m_SyncRotationAxis: 7

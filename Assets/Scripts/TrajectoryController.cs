@@ -5,10 +5,10 @@ using System.Threading;
 public class TrajectoryController : MonoBehaviour {
 
     public string arm;
-    public GameObject targetModel;
+    GameObject targetModel;
     Transform tf;
     private WebsocketClient wsc;
-    private VRTK.VRTK_ControllerEvents controller;
+    private SteamVR_TrackedController controller;
     TFListener TFListener;
     float scale;
     Vector3 lastControllerPosition;
@@ -22,13 +22,20 @@ public class TrajectoryController : MonoBehaviour {
     // Use this for initialization
     void Start() {
 
-        GameObject wso = GameObject.FindWithTag("WebsocketTag");
-        wsc = wso.GetComponent<WebsocketClient>();
+        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
-        controller = GetComponent<VRTK.VRTK_ControllerEvents>();
+        controller = GameObject.Find("Controller (" + arm + ")").GetComponent<SteamVR_TrackedController>();
         TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
         tf = GetComponent<Transform>();
+
+        if (arm == "left") {
+            targetModel = GameObject.Find("LeftTargetModel");
+        } else if (arm == "right") {
+            targetModel = GameObject.Find("RightTargetModel");
+        } else {
+            Debug.LogError("arm must be left or right");
+        }
 
         //last positions/rotation of the controller (calculate relative displacement of controller at each update)
         lastControllerPosition = tf.position;
@@ -63,7 +70,7 @@ public class TrajectoryController : MonoBehaviour {
 
 
         //Allows movement control with controllers if menu is disabled
-        if (controller.gripPressed) { //deadman switch being pressed
+        if (controller.gripped) { //deadman switch being pressed
             lastArmPosition = lastArmPosition + deltaPos; //new arm position
             lastArmRotation = deltaRot * lastArmRotation; //new arm rotation
 
@@ -78,18 +85,6 @@ public class TrajectoryController : MonoBehaviour {
             Quaternion outQuat = UnityToRosRotationAxisConversion(lastArmRotation);
 
             message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
-        }
-        else if (controller.touchpadPressed) {
-            float angle = controller.GetTouchpadAxisAngle();
-
-            if (angle >= 45 && angle < 135) // touching right
-                message += " yDown ";
-            else if (angle >= 135 && angle < 225) // touching bottom
-                message += " xDown ";
-            else if (angle >= 225 && angle < 315) // touching left
-                message += " yUp ";
-            else //touching top
-                message += " xUp ";
         }
         if (controller.triggerPressed) {
             message += " openGripper ";

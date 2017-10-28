@@ -23,6 +23,7 @@ public class ArmController : MonoBehaviour {
         // Create publisher to the Baxter's arm topic (uses Ein)
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
         // Asychrononously call sendControls every .1 seconds
+        Debug.Log("Hi");
         InvokeRepeating("SendControls", .1f, .1f);
     }
 
@@ -54,6 +55,7 @@ public class ArmController : MonoBehaviour {
         }
 
         //Send the message to the websocket client (i.e: publish message onto ROS network)
+        Debug.Log(message);
         wsc.SendEinMessage(message, arm);
 
         //Debug.Log(arm+":"+message);

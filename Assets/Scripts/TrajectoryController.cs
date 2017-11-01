@@ -25,34 +25,35 @@ public class TrajectoryController : MonoBehaviour {
         TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
         tf = GetComponent<Transform>();
 
-        InvokeRepeating("myUpdate", 1.2f, .1f); //send message to move arm by displacement of current controller position/rotation with previous position/rotation
+        //InvokeRepeating("myUpdate", 1.2f, 1f); //send message to move arm by displacement of current controller position/rotation with previous position/rotation
     }
 
 
 
-    void myUpdate() {
+    void Update() {
         scale = TFListener.scale;
 
         //message to be sent over ROs network
         message = "";
 
-        if (controller.triggerPressed) {
+        if (controller.triggerPressed) { //moves the arm to where the cube is
             followTarget.GetComponent<Renderer>().material.color = Color.green;
 
             Vector3 outPos = UnityToRosPositionAxisConversion(followTarget.GetComponent<Transform>().position) / scale;
 
             message = outPos.x + " " + outPos.y + " " + outPos.z + " " + 0 + " " + 1 + " " + 0 + " " + 0 + " moveToEEPose";
+
             wsc.SendEinMessage(message, arm);
+            wsc.Publish("/demonstrations", message);
 
             StartCoroutine(waiter());
 
-            wsc.Publish("/demonstrations", "REC");
         }
         else {
             followTarget.GetComponent<Renderer>().material.color = Color.red;
         }
 
-        Debug.Log(message);
+        //Debug.Log(message);
         //Debug.Log(lastArmPosition);
     }
 
@@ -67,7 +68,7 @@ public class TrajectoryController : MonoBehaviour {
 
     IEnumerator waiter() 
         {
-            yield return new WaitForSeconds(.2f);
+            yield return new WaitForSeconds(1f);
         }
 
 }

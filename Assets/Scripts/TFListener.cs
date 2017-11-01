@@ -17,12 +17,7 @@ public class TFListener : MonoBehaviour
         wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", 0);
 
-		//Attach table stuff
-		GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
-		GameObject table = GameObject.Find ("Table");
-		table.transform.SetParent (basePivot.transform); //make table the parent object of the base pivot
-		table.transform.localPosition = new Vector3 (0f, -.15f, 0f); //new local position
-		table.transform.localScale = new Vector3 (0.2123f, 1f, 0.2123f);//local scaling of robot
+
 	}
 
 	void Update () 
@@ -31,13 +26,13 @@ public class TFListener : MonoBehaviour
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
         //Debug.Log(string.Join(", ", tfElements));
         foreach (string tfElement in tfElements) {
-            //Debug.Log(tfElement);
+            
             //continue;
 			string[] dataPair = tfElement.Split (':');
 			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"); // replace with hashmap
 			if (cur != null) {
-
-				string[] tmp = dataPair [1].Split ('^'); //seperate position from rotation data
+                //Debug.Log(cur);
+                string[] tmp = dataPair [1].Split ('^'); //seperate position from rotation data
 				string pos = tmp [0]; //position data
 				string rot = tmp [1]; //rotation data
 				pos = pos.Substring (1, pos.Length - 2);

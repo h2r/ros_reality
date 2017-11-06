@@ -31,6 +31,8 @@ public class URDFParser : MonoBehaviour {
                                                                                                                  //string meshfile = relativePath + pair.Value.getMeshFile().Split(delims, 5)[4].Split(delims2)[0] + "_decimate2"; // DECIMATED
                 //Debug.Log(meshfile);
                 instance = Instantiate(Resources.Load(meshfile, typeof(GameObject))) as GameObject;
+                Debug.Log(pair.Value.getName());
+                Debug.Log(pair.Value.getScale());
                 instance.name = pair.Key;
             }
             else {
@@ -42,6 +44,7 @@ public class URDFParser : MonoBehaviour {
             origin.transform.SetParent(pivot.transform);
             origin.transform.localPosition = RosToUnityPositionAxisConversion(pair.Value.getXyz());
             origin.transform.localEulerAngles = RosToUnityRotationAxisConversion(pair.Value.getRpy());
+            origin.transform.localScale = pair.Value.getScale();
 
             pivot.transform.SetParent(root.transform);
         }
@@ -148,9 +151,11 @@ public class URDFParser : MonoBehaviour {
         Dictionary<string, Link> linkDict = new Dictionary<string, Link>(); //instantiate a dictionary to hold all links
 
         //holds values for each loop of going through links
+
         string lname = null;
         Vector3 lo_rpy = new Vector3();
         Vector3 lo_xyz = new Vector3();
+        Vector3 lscale_v = new Vector3(1f,1f,1f);
         string lmeshfile = null;
         Vector4 lmaterial = new Vector4();
 
@@ -205,6 +210,12 @@ public class URDFParser : MonoBehaviour {
                                 if (child.Name == "mesh") {
                                     //Debug.Log (mesh.Attributes ["filename"].Value);
                                     lmeshfile = child.Attributes["filename"].Value;
+                                    try {
+                                        string[] lscale = child.Attributes["scale"].Value.Split(delims);
+                                        lscale_v = new Vector3(float.Parse(lscale[0]), float.Parse(lscale[1]), float.Parse(lscale[2]));
+
+                                    }
+                                    catch { }
                                 }
                             }
                         }
@@ -229,10 +240,10 @@ public class URDFParser : MonoBehaviour {
             {
                 Link temp;
                 if (lmaterialF == true) { //has a material vector as well
-                    temp = new Link(lname, lo_rpy, lo_xyz, lmeshfile, lmaterial);
+                    temp = new Link(lname, lo_rpy, lo_xyz, lmeshfile, lmaterial, lscale_v);
                 }
                 else {
-                    temp = new Link(lname, lo_rpy, lo_xyz, lmeshfile);
+                    temp = new Link(lname, lo_rpy, lo_xyz, lmeshfile, lscale_v);
                 }
                 linkDict.Add(lname, temp);
             }
@@ -250,13 +261,15 @@ public class URDFParser : MonoBehaviour {
         Vector3 o_xyz;
         string meshfile;
         Vector4 material;
+        Vector3 scale;
 
-        public Link(string name, Vector3 o_rpy, Vector3 o_xyz, string meshfile, Vector4 material) {
+        public Link(string name, Vector3 o_rpy, Vector3 o_xyz, string meshfile, Vector4 material, Vector3 scale) {
             this.name = name;
             this.o_rpy = o_rpy;
             this.o_xyz = o_xyz;
             this.meshfile = meshfile;
             this.material = material;
+            this.scale = scale;
         }
 
         public string toString() {
@@ -266,15 +279,17 @@ public class URDFParser : MonoBehaviour {
             retString += "XYZ:" + this.o_xyz.x + " " + this.o_xyz.y + " " + this.o_xyz.z + "\n";
             retString += "mesh file:" + this.meshfile + "\n";
             retString += "Material:" + +this.material.x + " " + this.material.y + " " + this.material.z + " " + this.material.w;
+            retString += "Scale:" + +this.scale.x + " " + this.scale.y + " " + this.scale.z;
             return retString;
         }
 
-        public Link(string name, Vector3 o_rpy, Vector3 o_xyz, string meshfile) {
+        public Link(string name, Vector3 o_rpy, Vector3 o_xyz, string meshfile, Vector3 scale) {
             this.name = name;
             this.o_rpy = o_rpy;
             this.o_xyz = o_xyz;
             this.meshfile = meshfile;
             this.material = new Vector4(1, 1, 1, 1);
+            this.scale = scale;
         }
 
         public string getName() {
@@ -295,6 +310,10 @@ public class URDFParser : MonoBehaviour {
 
         public Vector4 getMaterial() {
             return this.material;
+        }
+        
+        public Vector3 getScale() {
+            return this.scale;
         }
 
     }

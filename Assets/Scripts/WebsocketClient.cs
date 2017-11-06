@@ -74,7 +74,6 @@ public class WebsocketClient : MonoBehaviour {
         data = data.Substring(4);
         data = data.Split('"')[0];
         messages[topic] = data;
-        //Debug.Log(data);
     }
 
     private void OnOpenHandler(object sender, System.EventArgs e) {

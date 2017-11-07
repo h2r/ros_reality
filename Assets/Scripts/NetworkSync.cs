@@ -15,9 +15,9 @@ public class NetworkSync : NetworkBehaviour {
         head_tf = this.transform.Find("Head");
         left_tf = this.transform.Find("Left Controller");
         right_tf = this.transform.Find("Right Controller");
-        GameObject nm = GameObject.Find("NetworkManager");
-        int num = nm.GetComponent<TeleopManager>().player_num;
-        nm.GetComponent<TeleopManager>().player_num += 1;
+        GameObject tm = GameObject.Find("TeleopManager");
+        int num = tm.GetComponent<TeleopManager>().player_num;
+        tm.GetComponent<TeleopManager>().CmdIncrement();
         this.name = "Player" + num.ToString();
 
     }

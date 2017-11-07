@@ -28,37 +28,39 @@ public class ArmController : MonoBehaviour {
     }
 
     void SendControls() {
-        scale = TFListener.scale;
+        if ((this.transform.parent.name == "Player1" && this.arm == "left") || (this.transform.parent.name == "Player2" && this.arm == "right")) {
+            scale = TFListener.scale;
 
-        //Convert the Unity position of the hand controller to a ROS position (scaled)
-        Vector3 outPos = UnityToRosPositionAxisConversion(GetComponent<Transform>().position) / scale;
-        //Convert the Unity rotation of the hand controller to a ROS rotation (scaled, quaternions)
-        Quaternion outQuat = UnityToRosRotationAxisConversion(GetComponent<Transform>().rotation);
-        //construct the Ein message to be published
-        string message = "";
-        //Allows movement control with controllers if menu is disabled
+            //Convert the Unity position of the hand controller to a ROS position (scaled)
+            Vector3 outPos = UnityToRosPositionAxisConversion(GetComponent<Transform>().position) / scale;
+            //Convert the Unity rotation of the hand controller to a ROS rotation (scaled, quaternions)
+            Quaternion outQuat = UnityToRosRotationAxisConversion(GetComponent<Transform>().rotation);
+            //construct the Ein message to be published
+            string message = "";
+            //Allows movement control with controllers if menu is disabled
 
-        //if deadman switch held in, move to new pose
-        if (controller.gripped) {
-            //construct message to move to new pose for the robot end effector 
-            message = outPos.x + " " + outPos.y + " " + outPos.z + " " +
-            outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
-            //if touchpad is pressed (Crane game), incrementally move in new direction
+            //if deadman switch held in, move to new pose
+            if (controller.gripped) {
+                //construct message to move to new pose for the robot end effector 
+                message = outPos.x + " " + outPos.y + " " + outPos.z + " " +
+                outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+                //if touchpad is pressed (Crane game), incrementally move in new direction
+            }
+
+            //If trigger pressed, open the gripper. Else, close gripper
+            if (controller.triggerPressed) {
+                message += " openGripper ";
+            }
+            else {
+                message += " closeGripper ";
+            }
+
+            //Send the message to the websocket client (i.e: publish message onto ROS network)
+            //Debug.Log(message);
+            wsc.SendEinMessage(message, arm);
+
+            //Debug.Log(arm+":"+message);
         }
-        
-        //If trigger pressed, open the gripper. Else, close gripper
-        if (controller.triggerPressed) {
-            message += " openGripper ";
-        }
-        else {
-            message += " closeGripper ";
-        }
-
-        //Send the message to the websocket client (i.e: publish message onto ROS network)
-        //Debug.Log(message);
-        wsc.SendEinMessage(message, arm);
-
-        //Debug.Log(arm+":"+message);
     }
 
     //Convert 3D Unity position to ROS position 

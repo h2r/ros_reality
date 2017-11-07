@@ -55,7 +55,7 @@ public class ArmController : MonoBehaviour {
         }
 
         //Send the message to the websocket client (i.e: publish message onto ROS network)
-        Debug.Log(message);
+        //Debug.Log(message);
         wsc.SendEinMessage(message, arm);
 
         //Debug.Log(arm+":"+message);

@@ -8,14 +8,18 @@ public class NetworkSync : NetworkBehaviour {
     GameObject camera_rig;
     Transform head_tf;
     Transform left_tf;
-    Transform right_tf; 
+    Transform right_tf;
 
     public override void OnStartLocalPlayer() {
-
         camera_rig = GameObject.Find("[CameraRig]");
         head_tf = this.transform.Find("Head");
         left_tf = this.transform.Find("Left Controller");
         right_tf = this.transform.Find("Right Controller");
+        GameObject nm = GameObject.Find("NetworkManager");
+        int num = nm.GetComponent<TeleopManager>().player_num;
+        nm.GetComponent<TeleopManager>().player_num += 1;
+        this.name = "Player" + num.ToString();
+
     }
 	
 	// Update is called once per frame

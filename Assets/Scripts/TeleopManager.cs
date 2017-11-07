@@ -8,8 +8,7 @@ public class TeleopManager : NetworkBehaviour {
     [SyncVar]
     public int player_num = 1;
 
-    [Command]
-    public void CmdIncrement() {
+    public void Increment() {
         if (!isServer) {
             return;
         }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class NetworkSync : NetworkBehaviour {
+public class PositionSync : NetworkBehaviour {
 
     GameObject camera_rig;
     Transform head_tf;
@@ -18,6 +18,7 @@ public class NetworkSync : NetworkBehaviour {
         //foreach MeshRenderer mr in transform.GetComponentsInChildren<MeshRenderer>() {
         //    mr.material.color = Color.blue;
         //}
+        this.name = "Player" + (((int) GetComponent<NetworkIdentity>().netId.Value) / 3).ToString();
     }
 	
 	// Update is called once per frame

@@ -28,7 +28,7 @@ public class ArmController : MonoBehaviour {
     }
 
     void SendControls() {
-        if ((this.transform.parent.name == "Player1" && this.arm == "left") || (this.transform.parent.name == "Player2" && this.arm == "right")) {
+        if ((this.transform.parent.name == "Player3" && this.arm == "left") || (this.transform.parent.name == "Player4" && this.arm == "right")) {
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)

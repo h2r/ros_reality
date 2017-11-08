@@ -18,7 +18,6 @@ public class PositionSync : NetworkBehaviour {
         //foreach MeshRenderer mr in transform.GetComponentsInChildren<MeshRenderer>() {
         //    mr.material.color = Color.blue;
         //}
-        this.name = "Player" + (((int) GetComponent<NetworkIdentity>().netId.Value) / 3).ToString();
     }
 	
 	// Update is called once per frame

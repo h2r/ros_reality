@@ -23,12 +23,12 @@ public class ArmController : MonoBehaviour {
         // Create publisher to the Baxter's arm topic (uses Ein)
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
         // Asychrononously call sendControls every .1 seconds
-        Debug.Log("Hi");
         InvokeRepeating("SendControls", .1f, .1f);
     }
 
     void SendControls() {
-        if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player 4" && this.arm == "right")) {
+        if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player4" && this.arm == "right")) {
+            Debug.Log(this.transform.parent.name + "   "  + this.arm);
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)

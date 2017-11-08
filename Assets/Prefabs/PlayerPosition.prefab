@@ -56,6 +56,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4705428213723608}
   - component: {fileID: 114384917158433594}
+  - component: {fileID: 114676087963674714}
   m_Layer: 0
   m_Name: Right Controller
   m_TagString: Untagged
@@ -108,6 +109,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4932514296358974}
   - component: {fileID: 114105766919540940}
+  - component: {fileID: 114887561781449596}
   m_Layer: 0
   m_Name: Left Controller
   m_TagString: Untagged
@@ -249,8 +251,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1388010723571292}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.224, y: 0, z: -0.004}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.224, y: 0, z: -0.003999993}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4270448115211342}
@@ -689,6 +691,70 @@ MonoBehaviour:
   m_MovementThreshold: 0.001
   m_InterpolateRotation: 0.5
   m_InterpolateMovement: 0.5
+--- !u!114 &114676087963674714
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1388010723571292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 215
+    i1: 187
+    i2: 27
+    i3: 140
+    i4: 203
+    i5: 208
+    i6: 52
+    i7: 20
+    i8: 153
+    i9: 133
+    i10: 115
+    i11: 57
+    i12: 118
+    i13: 65
+    i14: 104
+    i15: 41
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
+--- !u!114 &114887561781449596
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1792287210034066}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 215
+    i1: 187
+    i2: 27
+    i3: 140
+    i4: 203
+    i5: 208
+    i6: 52
+    i7: 20
+    i8: 153
+    i9: 133
+    i10: 115
+    i11: 57
+    i12: 118
+    i13: 65
+    i14: 104
+    i15: 41
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114947275875596242
 MonoBehaviour:
   m_ObjectHideFlags: 1

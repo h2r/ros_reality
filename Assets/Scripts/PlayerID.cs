@@ -17,7 +17,7 @@ public class PlayerID : NetworkBehaviour {
 
     void Awake() {
         myTransform = transform;
-    }.
+    }
 
     void Update() {
         if (this.name == "" || this.name == "PlayerPosition(clone)") {

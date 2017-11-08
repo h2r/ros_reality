@@ -20,7 +20,7 @@ public class PlayerID : NetworkBehaviour {
     }
 
     void Update() {
-        if (this.name == "" || this.name == "PlayerPosition(clone)") {
+        if (this.name == "" || this.name == "PlayerPosition(Clone)") {
             SetIdentity();
         }
     }

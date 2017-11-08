@@ -7,7 +7,7 @@ using UnityEngine.Networking;
 public class PlayerID : NetworkBehaviour {
 
     [SyncVar] public string playerUniqueIdentity;
-    private int playerNetID;
+    private NetworkInstanceId playerNetID;
     
 	public override void OnStartLocalPlayer() {
         GetNetIdentity();
@@ -22,8 +22,7 @@ public class PlayerID : NetworkBehaviour {
 
     [Client]
     void GetNetIdentity() {
-        playerNetID = (int) GetComponent<NetworkIdentity>().netId.Value;
-        playerNetID /= 3;
+        playerNetID = GetComponent<NetworkIdentity>().netId;
         CmdTellServerMyIdentity(MakeUniqueIdentity());
     }
 

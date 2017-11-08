@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using UnityEngine.Networking;
 
-public class ArmController : MonoBehaviour {
+public class ArmController : NetworkBehaviour {
     // string of which arm to control. Valid values are "left" and "right"
     public string arm;
     //websocket client connected to ROS network
@@ -27,7 +28,10 @@ public class ArmController : MonoBehaviour {
     }
 
     void SendControls() {
-        if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player4" && this.arm == "right")) {
+        if (!isLocalPlayer) {
+            return;
+        }
+        if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player 4" && this.arm == "right")) {
             Debug.Log(this.transform.parent.name + "   "  + this.arm);
             scale = TFListener.scale;
 

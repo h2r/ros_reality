@@ -8,11 +8,16 @@ public class PlayerID : NetworkBehaviour {
 
     [SyncVar] public string playerUniqueIdentity;
     private NetworkInstanceId playerNetID;
+    private Transform myTransform;
     
 	public override void OnStartLocalPlayer() {
         GetNetIdentity();
         SetIdentity();
     }
+
+    void Awake() {
+        myTransform = transform;
+    }.
 
     void Update() {
         if (this.name == "" || this.name == "PlayerPosition(clone)") {
@@ -28,9 +33,9 @@ public class PlayerID : NetworkBehaviour {
 
     void SetIdentity() {
         if(!isLocalPlayer) {
-            this.name = playerUniqueIdentity;
+            transform.name = playerUniqueIdentity;
         } else {
-            this.name = MakeUniqueIdentity();
+            transform.name = MakeUniqueIdentity();
         }
     }
 

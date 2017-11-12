@@ -31,8 +31,8 @@ public class URDFParser : MonoBehaviour {
                                                                                                                  //string meshfile = relativePath + pair.Value.getMeshFile().Split(delims, 5)[4].Split(delims2)[0] + "_decimate2"; // DECIMATED
                 //Debug.Log(meshfile);
                 instance = Instantiate(Resources.Load(meshfile, typeof(GameObject))) as GameObject;
-                Debug.Log(pair.Value.getName());
-                Debug.Log(pair.Value.getScale());
+                //Debug.Log(pair.Value.getName());
+                //Debug.Log(pair.Value.getScale());
                 instance.name = pair.Key;
             }
             else {

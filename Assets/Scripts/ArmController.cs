@@ -40,9 +40,9 @@ public class ArmController : NetworkBehaviour {
             return;
         }
         cur_time = Time.time;
-         Debug.Log(this.transform.name + "   " + this.arm);
         if ((this.transform.name == "Player 3" && this.arm == "left") || (this.transform.name == "Player 4" && this.arm == "right")) {
-            
+            Debug.Log(this.transform.name + "   " + this.arm);
+
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)

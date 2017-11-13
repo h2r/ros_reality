@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class ArmController : MonoBehaviour {
+public class ArmController : NetworkBehaviour {
     // string of which arm to control. Valid values are "left" and "right"
     public string arm;
     //websocket client connected to ROS network
@@ -10,6 +10,9 @@ public class ArmController : MonoBehaviour {
     TFListener TFListener;
     //scale represents how resized the virtual robot is
     float scale;
+    float delay = .1f;
+    float cur_time;
+
 
     void Start() {
         // Get the live websocket client
@@ -21,18 +24,23 @@ public class ArmController : MonoBehaviour {
         // Get the controller componenet of this gameobject
         controller = GameObject.Find("Controller (" + arm + ")").GetComponent<SteamVR_TrackedController>();
 
+        cur_time = Time.time;
+
         // Create publisher to the Baxter's arm topic (uses Ein)
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
         // Asychrononously call sendControls every .1 seconds
-        InvokeRepeating("SendControls", .1f, .1f);
+        //InvokeRepeating("SendControls", .1f, .1f);
     }
 
-    void SendControls() {
-        //if (isLocalPlayer) {
-        //    return;
-        //}
+    void Update() {
+        
+        if ((Time.time - cur_time) < delay) {
+            return;
+        }
+        cur_time = Time.time;
+         Debug.Log(this.transform.parent.name + "   " + this.arm);
         if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player 4" && this.arm == "right")) {
-            Debug.Log(this.transform.parent.name + "   " + this.arm);
+            
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)

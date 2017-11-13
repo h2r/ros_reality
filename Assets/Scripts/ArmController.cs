@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Networking;
 
-public class ArmController : NetworkBehaviour {
+public class ArmController : MonoBehaviour {
     // string of which arm to control. Valid values are "left" and "right"
     public string arm;
     //websocket client connected to ROS network
@@ -27,13 +27,12 @@ public class ArmController : NetworkBehaviour {
         InvokeRepeating("SendControls", .1f, .1f);
     }
 
-    [Client]
     void SendControls() {
-        if (!isLocalPlayer) {
-            return;
-        }
+        //if (isLocalPlayer) {
+        //    return;
+        //}
         if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player 4" && this.arm == "right")) {
-            Debug.Log(this.transform.parent.name + "   "  + this.arm);
+            Debug.Log(this.transform.parent.name + "   " + this.arm);
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)

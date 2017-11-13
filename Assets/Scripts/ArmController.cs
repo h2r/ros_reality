@@ -12,7 +12,7 @@ public class ArmController : NetworkBehaviour {
     float scale;
     float delay = .1f;
     float cur_time;
-
+    Transform armTransform;
 
     void Start() {
         // Get the live websocket client
@@ -28,25 +28,27 @@ public class ArmController : NetworkBehaviour {
 
         // Create publisher to the Baxter's arm topic (uses Ein)
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
-        // Asychrononously call sendControls every .1 seconds
-        //InvokeRepeating("SendControls", .1f, .1f);
+
+        armTransform = transform.Find(arm + " Controller");
     }
 
     void Update() {
-        
+        if(!isLocalPlayer) {
+            return;
+        }
         if ((Time.time - cur_time) < delay) {
             return;
         }
         cur_time = Time.time;
-         Debug.Log(this.transform.parent.name + "   " + this.arm);
-        if ((this.transform.parent.name == "Player 3" && this.arm == "left") || (this.transform.parent.name == "Player 4" && this.arm == "right")) {
+         Debug.Log(this.transform.name + "   " + this.arm);
+        if ((this.transform.name == "Player 3" && this.arm == "left") || (this.transform.name == "Player 4" && this.arm == "right")) {
             
             scale = TFListener.scale;
 
             //Convert the Unity position of the hand controller to a ROS position (scaled)
-            Vector3 outPos = UnityToRosPositionAxisConversion(GetComponent<Transform>().position) / scale;
+            Vector3 outPos = UnityToRosPositionAxisConversion(armTransform.position) / scale;
             //Convert the Unity rotation of the hand controller to a ROS rotation (scaled, quaternions)
-            Quaternion outQuat = UnityToRosRotationAxisConversion(GetComponent<Transform>().rotation);
+            Quaternion outQuat = UnityToRosRotationAxisConversion(armTransform.rotation);
             //construct the Ein message to be published
             string message = "";
             //Allows movement control with controllers if menu is disabled

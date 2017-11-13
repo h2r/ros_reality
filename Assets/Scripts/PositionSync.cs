@@ -13,8 +13,8 @@ public class PositionSync : NetworkBehaviour {
     public override void OnStartLocalPlayer() {
         camera_rig = GameObject.Find("[CameraRig]");
         head_tf = this.transform.Find("Head");
-        left_tf = this.transform.Find("Left Controller");
-        right_tf = this.transform.Find("Right Controller");
+        left_tf = this.transform.Find("left Controller");
+        right_tf = this.transform.Find("right Controller");
         //foreach MeshRenderer mr in transform.GetComponentsInChildren<MeshRenderer>() {
         //    mr.material.color = Color.blue;
         //}

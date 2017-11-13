@@ -55,10 +55,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4705428213723608}
-  - component: {fileID: 114384917158433594}
   - component: {fileID: 114676087963674714}
   m_Layer: 0
-  m_Name: Right Controller
+  m_Name: right Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,10 +107,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4932514296358974}
-  - component: {fileID: 114105766919540940}
   - component: {fileID: 114887561781449596}
   m_Layer: 0
-  m_Name: Left Controller
+  m_Name: left Controller
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -168,6 +166,8 @@ GameObject:
   - component: {fileID: 114039696059633704}
   - component: {fileID: 114470915550907702}
   - component: {fileID: 114947275875596242}
+  - component: {fileID: 114667649731684010}
+  - component: {fileID: 114985393457266860}
   m_Layer: 0
   m_Name: PlayerPosition
   m_TagString: Untagged
@@ -597,18 +597,6 @@ MonoBehaviour:
   m_MovementThreshold: 0.001
   m_InterpolateRotation: 0.5
   m_InterpolateMovement: 0.5
---- !u!114 &114105766919540940
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1792287210034066}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8679d79bab536d149b74770004a331f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arm: left
 --- !u!114 &114254092540967172
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -630,18 +618,6 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
---- !u!114 &114384917158433594
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1388010723571292}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8679d79bab536d149b74770004a331f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  arm: right
 --- !u!114 &114470915550907702
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -691,6 +667,18 @@ MonoBehaviour:
   m_MovementThreshold: 0.001
   m_InterpolateRotation: 0.5
   m_InterpolateMovement: 0.5
+--- !u!114 &114667649731684010
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951205287416926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8679d79bab536d149b74770004a331f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arm: left
 --- !u!114 &114676087963674714
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -767,6 +755,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerUniqueIdentity: 
+--- !u!114 &114985393457266860
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1951205287416926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8679d79bab536d149b74770004a331f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arm: right
 --- !u!135 &135242696688967144
 SphereCollider:
   m_ObjectHideFlags: 1

@@ -9,8 +9,9 @@ Currently only tested on Windows 10. The only large change needed to make this M
 ## Installation
 1. Download and install [ros_reality_bridge](https://github.com/h2r/ros_reality_bridge) on your robot computer. Follow instructions there.
 2. Download and install Unity 2017.1
-3. Clone this repo
-4. Open repo as new project
+3. Install [git LFS](https://git-lfs.github.com/). Some of the mesh files of baxter get pretty big, so LFS makes this much easier. 
+4. Clone this repo
+5. Open repo as new project
 
 ## Scenes
 There are 4 scenes that show off different ways to interact with the robot.

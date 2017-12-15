@@ -19,3 +19,16 @@ There are 4 scenes that show off different ways to interact with the robot.
 2. Menu Demo - Demo showing how to build a menu
 3. Position Control - The robot gripper is controller with the trigger, and the position of the end effector moves to the position of the controller with the controller side buttons (grips) are pressed down.
 4. Trajectory Control -  The robot gripper is controller with the trigger, and the position of the end effector is controlled by the trajectory of the controller when the side buttons are pressed down.
+
+## Branches
+We suggest using master, but feel free to look at other branches for extensions of this work.
+
+gary-branch: ROS Reality for the PR2
+
+json: Rather than use our custom string format to send robot joint data from ROS to Unity, we format it as a JSON string. If you use this, pull from the json branch on the ROS_Reality github page.
+
+lfd: Branch for performing learning from demonstrations in VR. Pull the associated ROS_reality git branch
+
+multiplayer: Allows for multiple humans to be in the VR scene. 
+
+Nao: ROS Reality for the Nao.

@@ -4,8 +4,6 @@ using System.Collections;
 
 public class TFListener : MonoBehaviour
 {
-
-
 	private WebsocketClient wsc;
 	public string topic = "ros_unity";
 

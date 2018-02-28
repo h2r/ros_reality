@@ -17,10 +17,6 @@ public class TFListener : MonoBehaviour
 
 		//Attach table stuff
 		GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
-		GameObject table = GameObject.Find ("Table");
-		table.transform.SetParent (basePivot.transform); //make table the parent object of the base pivot
-		table.transform.localPosition = new Vector3 (0f, -.15f, 0f); //new local position
-		table.transform.localScale = new Vector3 (0.2123f, 1f, 0.2123f);//local scaling of robot
 	}
 
 	void Update () 

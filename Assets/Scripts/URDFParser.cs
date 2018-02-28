@@ -15,7 +15,7 @@ public class URDFParser : MonoBehaviour {
     public GameObject root;
 
 
-    void Start() {
+    void Awake() {
         // Load all links and joints from URDF
         linkDict = loadLinkDict(xmlPath); //load in all the links into link dictionary
         jointDict = loadJointDict(xmlPath); //load in all the joints into joint dictionary

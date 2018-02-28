@@ -27,6 +27,9 @@ public class IKStatus : MonoBehaviour {
 
     IEnumerator Fade() {
         for (float f = 1f; f >= 0; f -= 0.05f) {
+            yield return null;
+        }
+        for (float f = 1f; f >= 0; f -= 0.01f) {
             if (f < 0.05f) {
                 f = 0f;
             }

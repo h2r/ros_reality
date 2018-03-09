@@ -18,7 +18,7 @@ public class IKStatus : MonoBehaviour {
 
     void CheckIK() {
         if (wsc.messages.ContainsKey(ik_topic) && wsc.messages[ik_topic].Equals("f")) {
-            Debug.Log("Ik Failed");
+            //Debug.Log("Ik Failed");
             wsc.messages[ik_topic] = "";
             rend.material.color = Color.red;
             StartCoroutine("Fade");

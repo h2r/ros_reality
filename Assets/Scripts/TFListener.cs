@@ -14,16 +14,12 @@ public class TFListener : MonoBehaviour
 	{
         wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", 0);
-
-		//Attach table stuff
-		GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
 	}
 
 	void Update () 
 	{
 		string message = wsc.messages[topic]; //get newest robot state data (from transform)
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
-        //Debug.Log(string.Join(", ", tfElements));
         foreach (string tfElement in tfElements) {
             //Debug.Log(tfElement);
             //continue;

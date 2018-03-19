@@ -14,7 +14,7 @@ public class RobotFactoryManager : MonoBehaviour {
 		
 	}
 
-    int getRobotNumber() {
+    public int getRobotNumber() {
         this.numRobots = this.numRobots + 1;
         return numRobots;
     }

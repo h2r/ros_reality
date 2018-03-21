@@ -9,6 +9,7 @@ public class MultiTFListener : MonoBehaviour
 	public string topic = "ros_unity";
 
 	public float scale = 1f;
+    private int robotNumber;
 
 	// Use this for initialization
 	void Start ()

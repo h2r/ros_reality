@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 
 public class TFListener : MonoBehaviour
 {
@@ -8,23 +10,31 @@ public class TFListener : MonoBehaviour
 	public string topic = "ros_unity";
 
 	public float scale = 1f;
+    public int robotNumber = -1;
 
 	// Use this for initialization
 	void Start ()
 	{
-        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
+        //wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
+        wsc = this.gameObject.GetComponent<WebsocketClient>();
+        this.robotNumber = wsc.robotNumber;
 		wsc.Subscribe (topic, "std_msgs/String", 0);
 	}
 
 	void Update () 
 	{
+        Dictionary<string, string>.KeyCollection keys = wsc.messages.Keys;
+        foreach (string key in keys) {
+            Console.WriteLine("Key: {0}", key);
+        }
+
 		string message = wsc.messages[topic]; //get newest robot state data (from transform)
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
         foreach (string tfElement in tfElements) {
             //Debug.Log(tfElement);
             //continue;
 			string[] dataPair = tfElement.Split (':');
-			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"); // replace with hashmap
+			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"+ robotNumber.ToString()); // replace with hashmap
 			if (cur != null) {
 
 				string[] tmp = dataPair [1].Split ('^'); //seperate position from rotation data

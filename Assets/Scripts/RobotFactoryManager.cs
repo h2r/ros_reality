@@ -5,16 +5,8 @@ using UnityEngine;
 public class RobotFactoryManager : MonoBehaviour {
     private int numRobots = 0;
 	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
-    public int getRobotNumber() {
+    public int assignRobotNumber() {
         this.numRobots = this.numRobots + 1;
         return numRobots;
     }

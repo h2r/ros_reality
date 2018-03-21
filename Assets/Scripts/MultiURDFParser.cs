@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
+using System;
 
 public class MultiURDFParser : MonoBehaviour {
 
@@ -12,13 +13,14 @@ public class MultiURDFParser : MonoBehaviour {
     public string xmlPath;
     string relativePath = "URDFs/";
     private int robotNumber;
+    public string ip_address = "ws://192.168.0.121:9090";
 
     public GameObject root;
 
 
     void Awake() {
         RobotFactoryManager rfm = this.GetComponent(typeof(RobotFactoryManager)) as RobotFactoryManager;
-        robotNumber = rfm.getRobotNumber();
+        robotNumber = rfm.assignRobotNumber();
         // Load all links and joints from URDF
         linkDict = loadLinkDict(xmlPath); //load in all the links into link dictionary
         jointDict = loadJointDict(xmlPath); //load in all the joints into joint dictionary
@@ -36,8 +38,13 @@ public class MultiURDFParser : MonoBehaviour {
                                                                                                                  //Debug.Log(meshfile);
 
                 Debug.Log(meshfile);
-                instance = Instantiate(Resources.Load(meshfile, typeof(GameObject))) as GameObject;
-                instance.name = pair.Key;
+                try {
+                    instance = Instantiate(Resources.Load(meshfile, typeof(GameObject))) as GameObject;
+                }
+                catch (Exception e) {
+                    instance = new GameObject();
+                    instance.name = pair.Key;
+                }
             }
             else {
                 instance = new GameObject(pair.Key); // we do this because there are some empty links that only serve to attach other things together (ex: right_arm_mount)
@@ -51,6 +58,12 @@ public class MultiURDFParser : MonoBehaviour {
 
             pivot.transform.SetParent(root.transform);
         }
+        //root.AddComponent<WebsocketClient>();
+        root.AddComponent(typeof(WebsocketClient));
+        root.GetComponent<WebsocketClient>().ip_address = this.ip_address;
+        root.GetComponent<WebsocketClient>().robotNumber = this.robotNumber;
+
+        root.AddComponent(typeof(TFListener));
 
         //Create parent heirachy for gameobjects based on joints
 

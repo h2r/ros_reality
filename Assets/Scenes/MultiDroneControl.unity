@@ -225,11 +225,11 @@ Prefab:
     - target: {fileID: 2348914, guid: 4d293c8e162f3874b982baadd71153d2, type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 1667322377}
+      objectReference: {fileID: 1723415487}
     - target: {fileID: 3380982, guid: 4d293c8e162f3874b982baadd71153d2, type: 2}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: 907031318}
+      objectReference: {fileID: 1219234225}
     - target: {fileID: 146900, guid: 4d293c8e162f3874b982baadd71153d2, type: 2}
       propertyPath: m_IsActive
       value: 1
@@ -288,7 +288,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xmlPath: C:\Users\robot\Documents\ROS_Unity\Assets\Resources\URDFs\quadrotor\hector_urdf.xml
-  root: {fileID: 1626883640}
+  ip_address: ws://138.16.161.197:9090
+  root: {fileID: 52711974}
 --- !u!4 &383159055
 Transform:
   m_ObjectHideFlags: 0
@@ -314,7 +315,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xmlPath: C:\Users\robot\Documents\ROS_Unity\Assets\Resources\URDFs\quadrotor\hector_urdf.xml
-  root: {fileID: 52711974}
+  ip_address: ws://138.16.161.184:9090
+  root: {fileID: 1731833055}
 --- !u!114 &383159057
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,6 +357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ip_address: ws://138.16.161.197:9090
+  robotNumber: -1
 --- !u!4 &421578385
 Transform:
   m_ObjectHideFlags: 0
@@ -380,6 +383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ip_address: ws://138.16.161.91:9090
+  robotNumber: -1
 --- !u!1 &510810036
 GameObject:
   m_ObjectHideFlags: 0
@@ -562,7 +566,63 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   arm: left
---- !u!43 &907031318
+--- !u!1 &1205416765
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1205416767}
+  - component: {fileID: 1205416766}
+  m_Layer: 0
+  m_Name: VRTK
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &1205416766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1205416765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5837af0260a118e4d808bfe0405429a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  persistOnLoad: 0
+  systemSDK: 1
+  boundariesSDK: 1
+  headsetSDK: 1
+  controllerSDK: 1
+  autoManageScriptDefines: 1
+  actualBoundaries: {fileID: 140406367}
+  actualHeadset: {fileID: 140406366}
+  actualLeftController: {fileID: 140406365}
+  actualRightController: {fileID: 140406364}
+  modelAliasLeftController: {fileID: 571739322}
+  modelAliasRightController: {fileID: 1505987965}
+  scriptAliasLeftController: {fileID: 571739322}
+  scriptAliasRightController: {fileID: 1505987965}
+--- !u!4 &1205416767
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1205416765}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 571739324}
+  - {fileID: 1505987967}
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!43 &1219234225
 Mesh:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -692,62 +752,6 @@ Mesh:
   m_BakedConvexCollisionMesh: 
   m_BakedTriangleCollisionMesh: 
   m_MeshOptimized: 0
---- !u!1 &1205416765
-GameObject:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  serializedVersion: 5
-  m_Component:
-  - component: {fileID: 1205416767}
-  - component: {fileID: 1205416766}
-  m_Layer: 0
-  m_Name: VRTK
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1205416766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1205416765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5837af0260a118e4d808bfe0405429a1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  persistOnLoad: 0
-  systemSDK: 1
-  boundariesSDK: 1
-  headsetSDK: 1
-  controllerSDK: 1
-  autoManageScriptDefines: 1
-  actualBoundaries: {fileID: 140406367}
-  actualHeadset: {fileID: 140406366}
-  actualLeftController: {fileID: 140406365}
-  actualRightController: {fileID: 140406364}
-  modelAliasLeftController: {fileID: 571739322}
-  modelAliasRightController: {fileID: 1505987965}
-  scriptAliasLeftController: {fileID: 571739322}
-  scriptAliasRightController: {fileID: 1505987965}
---- !u!4 &1205416767
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1205416765}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 571739324}
-  - {fileID: 1505987967}
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1414340243
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +931,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!21 &1667322377
+--- !u!21 &1723415487
 Material:
   serializedVersion: 6
   m_ObjectHideFlags: 0
@@ -960,6 +964,34 @@ Material:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
+--- !u!1 &1731833055
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1731833056}
+  m_Layer: 0
+  m_Name: doggo
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1731833056
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1731833055}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1927834802
 GameObject:
   m_ObjectHideFlags: 0
@@ -1089,6 +1121,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   topic: ros_unity
   scale: 1
+  robotNumber: -1
 --- !u!4 &1942038559
 Transform:
   m_ObjectHideFlags: 0

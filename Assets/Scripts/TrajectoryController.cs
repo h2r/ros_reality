@@ -5,10 +5,10 @@ using System.Threading;
 public class TrajectoryController : MonoBehaviour {
 
     public string arm;
-    GameObject targetModel;
+    public GameObject targetModel;
     Transform tf;
     private WebsocketClient wsc;
-    private SteamVR_TrackedController controller;
+    private VRTK.VRTK_ControllerEvents controller;
     TFListener TFListener;
     float scale;
     Vector3 lastControllerPosition;
@@ -21,27 +21,14 @@ public class TrajectoryController : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
+
+        GameObject wso = GameObject.FindWithTag("WebsocketTag");
+        wsc = wso.GetComponent<WebsocketClient>();
 
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
-
+        controller = GetComponent<VRTK.VRTK_ControllerEvents>();
         TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
         tf = GetComponent<Transform>();
-        scale = TFListener.scale;
-
-        controller = GameObject.Find("Controller (" + arm + ")").GetComponent<SteamVR_TrackedController>();
-
-
-
-
-
-        if (arm == "left") {
-            targetModel = GameObject.Find("LeftTargetModel");
-        } else if (arm == "right") {
-            targetModel = GameObject.Find("RightTargetModel");
-        } else {
-            Debug.LogError("arm must be left or right");
-        }
 
         //last positions/rotation of the controller (calculate relative displacement of controller at each update)
         lastControllerPosition = tf.position;
@@ -63,23 +50,26 @@ public class TrajectoryController : MonoBehaviour {
     }
 
     void Update() {
+        scale = TFListener.scale;
+
         Vector3 deltaPos = tf.position - lastControllerPosition; //displacement of current controller position to old controller position
         lastControllerPosition = tf.position;
 
         Quaternion deltaRot = tf.rotation * Quaternion.Inverse(lastControllerRotation); //delta of current controller rotation to old controller rotation
         lastControllerRotation = tf.rotation;
-        
+
         //message to be sent over ROs network
         message = "";
 
 
         //Allows movement control with controllers if menu is disabled
-        if (controller.gripped) { //deadman switch being pressed
+        if (controller.gripPressed) { //deadman switch being pressed
             lastArmPosition = lastArmPosition + deltaPos; //new arm position
             lastArmRotation = deltaRot * lastArmRotation; //new arm rotation
 
-            if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) { //make sure that the trajectory 
-                targetTransform.position = lastArmPosition;
+            if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) { //make sure that the target stays inside a 1.5 meter sphere around the robot
+                targetTransform.position = lastArmPosition + 0.09f * lastArmTF.up;
+                //targetTransform.position = lastArmPosition;
             }
             targetTransform.rotation = lastArmRotation;
 
@@ -90,6 +80,18 @@ public class TrajectoryController : MonoBehaviour {
 
             message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
         }
+        else if (controller.touchpadPressed) {
+            float angle = controller.GetTouchpadAxisAngle();
+
+            if (angle >= 45 && angle < 135) // touching right
+                message += " yDown ";
+            else if (angle >= 135 && angle < 225) // touching bottom
+                message += " xDown ";
+            else if (angle >= 225 && angle < 315) // touching left
+                message += " yUp ";
+            else //touching top
+                message += " xUp ";
+        }
         if (controller.triggerPressed) {
             message += " openGripper ";
         }
@@ -97,7 +99,7 @@ public class TrajectoryController : MonoBehaviour {
             message += " closeGripper ";
         }
 
-        //Debug.Log(message);
+        Debug.Log(message);
         //Debug.Log(lastArmPosition);
     }
 

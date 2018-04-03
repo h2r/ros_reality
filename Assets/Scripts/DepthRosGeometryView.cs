@@ -21,8 +21,7 @@ public class DepthRosGeometryView : MonoBehaviour {
 
     Matrix4x4 m;
 
-    public bool updatePointCloud = true;
-
+    // Use this for initialization
     void Start() {
         // Create a texture for the depth image and color image
         depthTexture = new Texture2D(width, height, TextureFormat.R16, false);
@@ -37,16 +36,17 @@ public class DepthRosGeometryView : MonoBehaviour {
         InvokeRepeating("UpdateTexture", 0.1f, 0.1f);
     }
 
+    // Update is called once per frame
     void UpdateTexture() {
-        if (!updatePointCloud) {
-            return;
-        }
         try {
             depthMessage = wsc.messages[depthTopic];
             byte[] depthImage = System.Convert.FromBase64String(depthMessage);
 
             depthTexture.LoadRawTextureData(depthImage);
+            //depthTexture.LoadImage(depthImage);
             depthTexture.Apply();
+            //Debug.Log(depthTexture.GetType());
+
         }
         catch (Exception e) {
             Debug.Log(e.ToString());

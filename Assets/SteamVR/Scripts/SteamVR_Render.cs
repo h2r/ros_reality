@@ -337,10 +337,6 @@ public class SteamVR_Render : MonoBehaviour
 #else
 	void OnCameraPreCull(Camera cam)
 	{
-#if !( UNITY_5_4 )
-		if (cam.cameraType != CameraType.VR)
-			return;
-#endif
 		// Only update poses on the first camera per frame.
 		if (Time.frameCount != lastFrameCount)
 		{

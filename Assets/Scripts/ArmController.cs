@@ -41,7 +41,7 @@ public class ArmController : NetworkBehaviour {
         }
         cur_time = Time.time;
         if ((this.transform.name == "Player 3" && this.arm == "left") || (this.transform.name == "Player 4" && this.arm == "right")) {
-            Debug.Log(this.transform.name + "   " + this.arm);
+            //Debug.Log(this.transform.name + "   " + this.arm);
 
             scale = TFListener.scale;
 

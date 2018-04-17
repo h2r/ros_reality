@@ -10,12 +10,12 @@ public class URDFParser : MonoBehaviour {
     Dictionary<string, GameObject> robotParts;
 
     public string xmlPath;
-    string relativePath = "URDFs/Baxter/";
+    string relativePath = "URDFs/Aibo/";
 
     public GameObject root;
 
 
-    void Start() {
+    void Awake() {
         // Load all links and joints from URDF
         linkDict = loadLinkDict(xmlPath); //load in all the links into link dictionary
         jointDict = loadJointDict(xmlPath); //load in all the joints into joint dictionary
@@ -27,9 +27,12 @@ public class URDFParser : MonoBehaviour {
         foreach (KeyValuePair<string, Link> pair in linkDict) {
             GameObject instance;
             if (pair.Value.getMeshFile() != null) {
+                Debug.Log(pair.Value.getMeshFile().Split(delims, 5)[4].Split(delims2)[0]);
                 string meshfile = relativePath + pair.Value.getMeshFile().Split(delims, 5)[4].Split(delims2)[0]; // NORMAL
                                                                                                                  //string meshfile = relativePath + pair.Value.getMeshFile().Split(delims, 5)[4].Split(delims2)[0] + "_decimate2"; // DECIMATED
                                                                                                                  //Debug.Log(meshfile);
+
+                Debug.Log(meshfile);
                 instance = Instantiate(Resources.Load(meshfile, typeof(GameObject))) as GameObject;
                 instance.name = pair.Key;
             }

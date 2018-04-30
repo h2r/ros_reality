@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package>
+  <name>aibo_description</name>
+  <version>0.0.0</version>
+  <description>The aibo_description package</description>
+
+  <maintainer email="dkotfis@icloud.com">Dave Kotfis</maintainer>
+  <license>MIT</license>
+  <!-- <url type="website">http://wiki.ros.org/aibo_description</url> -->
+  <author email="dkotfis@icloud.com">Dave Kotfis</author>
+  <buildtool_depend>catkin</buildtool_depend>
+
+</package>

@@ -8,7 +8,6 @@ public class TrajectoryController : MonoBehaviour {
     public GameObject targetModel;
     Transform tf;
     private WebsocketClient wsc;
-    private VRTK.VRTK_ControllerEvents controller;
     TFListener TFListener;
     float scale;
     Vector3 lastControllerPosition;
@@ -26,7 +25,6 @@ public class TrajectoryController : MonoBehaviour {
         wsc = wso.GetComponent<WebsocketClient>();
 
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
-        controller = GetComponent<VRTK.VRTK_ControllerEvents>();
         TFListener = GameObject.Find("TFListener").GetComponent<TFListener>();
         tf = GetComponent<Transform>();
 
@@ -63,41 +61,41 @@ public class TrajectoryController : MonoBehaviour {
 
 
         //Allows movement control with controllers if menu is disabled
-        if (controller.gripPressed) { //deadman switch being pressed
-            lastArmPosition = lastArmPosition + deltaPos; //new arm position
-            lastArmRotation = deltaRot * lastArmRotation; //new arm rotation
+        //if (controller.gripPressed) { //deadman switch being pressed
+        //    lastArmPosition = lastArmPosition + deltaPos; //new arm position
+        //    lastArmRotation = deltaRot * lastArmRotation; //new arm rotation
 
-            if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) { //make sure that the target stays inside a 1.5 meter sphere around the robot
-                targetTransform.position = lastArmPosition + 0.09f * lastArmTF.up;
-                //targetTransform.position = lastArmPosition;
-            }
-            targetTransform.rotation = lastArmRotation;
+        //    if ((Vector3.Distance(new Vector3(0f, 0f, 0f), lastArmPosition)) < 1.5) { //make sure that the target stays inside a 1.5 meter sphere around the robot
+        //        targetTransform.position = lastArmPosition + 0.09f * lastArmTF.up;
+        //        //targetTransform.position = lastArmPosition;
+        //    }
+        //    targetTransform.rotation = lastArmRotation;
 
-            //Vector3 outPos = UnityToRosPositionAxisConversion(lastArmTF.position + deltaPos) / scale;
-            Vector3 outPos = UnityToRosPositionAxisConversion(lastArmPosition) / scale;
-            //Quaternion outQuat = UnityToRosRotationAxisConversion(deltaRot * lastArmTF.rotation);
-            Quaternion outQuat = UnityToRosRotationAxisConversion(lastArmRotation);
+        //    //Vector3 outPos = UnityToRosPositionAxisConversion(lastArmTF.position + deltaPos) / scale;
+        //    Vector3 outPos = UnityToRosPositionAxisConversion(lastArmPosition) / scale;
+        //    //Quaternion outQuat = UnityToRosRotationAxisConversion(deltaRot * lastArmTF.rotation);
+        //    Quaternion outQuat = UnityToRosRotationAxisConversion(lastArmRotation);
 
-            message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
-        }
-        else if (controller.touchpadPressed) {
-            float angle = controller.GetTouchpadAxisAngle();
+        //    message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+        //}
+        //else if (controller.touchpadPressed) {
+        //    float angle = controller.GetTouchpadAxisAngle();
 
-            if (angle >= 45 && angle < 135) // touching right
-                message += " yDown ";
-            else if (angle >= 135 && angle < 225) // touching bottom
-                message += " xDown ";
-            else if (angle >= 225 && angle < 315) // touching left
-                message += " yUp ";
-            else //touching top
-                message += " xUp ";
-        }
-        if (controller.triggerPressed) {
-            message += " openGripper ";
-        }
-        else {
-            message += " closeGripper ";
-        }
+        //    if (angle >= 45 && angle < 135) // touching right
+        //        message += " yDown ";
+        //    else if (angle >= 135 && angle < 225) // touching bottom
+        //        message += " xDown ";
+        //    else if (angle >= 225 && angle < 315) // touching left
+        //        message += " yUp ";
+        //    else //touching top
+        //        message += " xUp ";
+        //}
+        //if (controller.triggerPressed) {
+        //    message += " openGripper ";
+        //}
+        //else {
+        //    message += " closeGripper ";
+        //}
 
         Debug.Log(message);
         //Debug.Log(lastArmPosition);

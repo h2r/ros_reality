@@ -4,8 +4,6 @@ using System.Collections;
 
 public class TFListener : MonoBehaviour
 {
-
-
 	private WebsocketClient wsc;
 	public string topic = "ros_unity";
 
@@ -16,20 +14,12 @@ public class TFListener : MonoBehaviour
 	{
         wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", 0);
-
-		//Attach table stuff
-		GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
-		GameObject table = GameObject.Find ("Table");
-		table.transform.SetParent (basePivot.transform); //make table the parent object of the base pivot
-		table.transform.localPosition = new Vector3 (0f, -.15f, 0f); //new local position
-		table.transform.localScale = new Vector3 (0.2123f, 1f, 0.2123f);//local scaling of robot
 	}
 
 	void Update () 
 	{
 		string message = wsc.messages[topic]; //get newest robot state data (from transform)
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
-        //Debug.Log(string.Join(", ", tfElements));
         foreach (string tfElement in tfElements) {
             //Debug.Log(tfElement);
             //continue;
@@ -60,8 +50,10 @@ public class TFListener : MonoBehaviour
 				Quaternion curRot = new Quaternion (rot_x, rot_y, rot_z, rot_w);
 
 				if (!cur.name.Contains("kinect")) { //rescaling direction of kinect point cloud
-                    cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion(curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
-                    cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion(curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
+                    //cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion(curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
+                    //cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion(curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
+                    cur.transform.position = scale * RosToUnityPositionAxisConversion(curPos); //convert ROS coordinates to Unity coordinates and scale for position vector
+                    cur.transform.rotation = RosToUnityQuaternionConversion(curRot); //convert ROS quaternions to Unity quarternions
                     cur.transform.localScale = new Vector3(scale, scale, scale);
 				} else {
 					cur.transform.localScale = new Vector3(-scale, scale, -scale);

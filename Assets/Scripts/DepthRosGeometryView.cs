@@ -29,8 +29,8 @@ public class DepthRosGeometryView : MonoBehaviour {
 
 
         wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
-        depthTopic = "kinect2/sd/image_depth_rect";
-        colorTopic = "kinect2/sd/image_color_rect/compressed";
+        depthTopic = "kinect2/sd/image_depth_rect_throttle";
+        colorTopic = "kinect2/sd/image_color_rect/compressed_throttle";
         wsc.Subscribe(depthTopic, "sensor_msgs/Image", compression, framerate);
         wsc.Subscribe(colorTopic, "sensor_msgs/CompressedImage", compression, framerate);
         InvokeRepeating("UpdateTexture", 0.1f, 0.1f);

@@ -77,6 +77,11 @@ public class ArmController : MonoBehaviour {
 
         Quaternion temp = (new Quaternion(qIn.x, qIn.z, -qIn.y, qIn.w)) * (new Quaternion(0, 1, 0, 0));
         return temp;
+
+        //return new Quaternion(-qIn.z, qIn.x, -qIn.w, -qIn.y);
+        //return new Quaternion(-qIn.z, qIn.w, -qIn.x, -qIn.y);
+        //return new Quaternion(-qIn.z, qIn.w, -qIn.x, -qIn.y);
+        //return new Quaternion(-qIn.z, qIn.x, qIn.w, qIn.y);
     }
 
 }

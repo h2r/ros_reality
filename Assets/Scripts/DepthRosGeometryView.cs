@@ -58,7 +58,8 @@ public class DepthRosGeometryView : MonoBehaviour {
             colorTexture.LoadImage(colorImage);
             colorTexture.Apply();
         }
-        catch {
+        catch (Exception e) {
+            Debug.Log(e.ToString());
             return;
         }
     }

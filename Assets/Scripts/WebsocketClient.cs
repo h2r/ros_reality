@@ -39,7 +39,7 @@ public class WebsocketClient : MonoBehaviour {
     public void Subscribe(string topic, string type, int throttle_rate) {
         string msg = "{\"op\":\"subscribe\",\"id\":\"subscribe:/" + topic + ":" + counter + "\",\"type\":\"" + type + "\",\"topic\":\"/" + topic + "\",\"throttle_rate\":" + throttle_rate.ToString() + ",\"queue_length\":0}";
         Debug.Log(msg);
-        ws.SendAsync(msg, OnSendComplete);
+        ws.Send(msg);
         counter++;
     }
 

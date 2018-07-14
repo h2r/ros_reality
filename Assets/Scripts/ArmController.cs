@@ -6,11 +6,16 @@ public class ArmController : MonoBehaviour {
 
     private string grip_label;
     private string trigger_label;
+
+    private string menu_label;
+    private string trackpad_label;
     //websocket client connected to ROS network
     private WebsocketClient wsc;
     TFListener TFListener;
     //scale represents how resized the virtual robot is
     float scale;
+
+    private bool RightMenuPressed = false;
 
     void Start() {
         // Get the live websocket client
@@ -21,16 +26,25 @@ public class ArmController : MonoBehaviour {
 
         // Create publisher to the Baxter's arm topic (uses Ein)
         wsc.Advertise("ein/" + arm + "/forth_commands", "std_msgs/String");
+
+        // Jonathan - Create publisher for recording toggle
+        wsc.Advertise("unity_learning_record/", "std_msgs/String");
+        wsc.Publish("unity_learning_record/", "0");
+
         // Asychrononously call sendControls every .1 seconds
         InvokeRepeating("SendControls", .1f, .1f);
 
         if (arm == "left") {
             grip_label = "Left Grip";
             trigger_label = "Left Trigger";
+            menu_label = "Left Menu";
+            trackpad_label = "Left Trackpad";
         }
         else if (arm == "right") {
             grip_label = "Right Grip";
             trigger_label = "Right Trigger";
+            menu_label = "Right Menu";
+            trackpad_label = "Right Trackpad";
         }
         else
             Debug.LogError("arm variable is not set correctly");
@@ -63,8 +77,28 @@ public class ArmController : MonoBehaviour {
             message += " closeGripper ";
         }
 
+        if (Input.GetButton(menu_label)) {
+            RightMenuPressed = true;
+        }
+        else
+        {
+            if (RightMenuPressed)
+            {
+                wsc.Publish("unity_learning_record/", "1");
+                Debug.Log("Sent command to start learning");
+                RightMenuPressed = false;
+
+            }
+        }
+
+        if (Input.GetButton(trackpad_label)) {
+            wsc.Publish("unity_learning_record/", "0");
+            Debug.Log("Sent command to stop learning");
+        }
+
         //Send the message to the websocket client (i.e: publish message onto ROS network)
         wsc.SendEinMessage(message, arm);
+        //Debug.Log(message);
     }
 
     //Convert 3D Unity position to ROS position 

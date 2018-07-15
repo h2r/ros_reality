@@ -247,6 +247,7 @@
     <Compile Include="Assets\Scripts\EinMenuScript.cs" />
     <Compile Include="Assets\Scripts\IKStatus.cs" />
     <Compile Include="Assets\Scripts\ProjectorListener.cs" />
+    <Compile Include="Assets\Scripts\TablePos.cs" />
     <Compile Include="Assets\Scripts\TFListener.cs" />
     <Compile Include="Assets\Scripts\TrajectoryController.cs" />
     <Compile Include="Assets\Scripts\URDFParser.cs" />

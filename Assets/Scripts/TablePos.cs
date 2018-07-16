@@ -14,26 +14,30 @@ public class TablePos : MonoBehaviour {
 		wsc = wso.GetComponent<WebsocketClient>();
 
 		wsc.Advertise("/follow_vr_head", "std_msgs/String");
+
+		InvokeRepeating("MoveHead", .5f, .5f);
 	}
 
 	// Update is called once per frame
-	void Update () {
+	void MoveHead () {
 		head = GameObject.Find("Camera (eye)");
-		Debug.Log (head.transform.position + Vector3.forward);
+		//Debug.Log (head.transform.position + Vector3.forward);
 		transform.position = head.transform.position + head.transform.forward*delta3;
 		transform.position = intersect_gaze_with_plane ();
 
 		Vector3 outPos = UnityToRosPositionAxisConversion(transform.position);
 
 		string msg = outPos.x.ToString () + " " + outPos.y.ToString () + " " + outPos.z.ToString ();
-
+		Debug.Log ("cube: " + transform.position);
+		//Debug.Log (transform.localPosition);
+		Debug.Log ("cube ros: " + msg);
 	    wsc.Publish("/follow_vr_head", msg);
 
 	}
 	Vector3 intersect_gaze_with_plane (){
 		float t = -head.transform.position.y / head.transform.forward.y;
 		Vector3 i = head.transform.position + head.transform.forward * t;
-		Debug.Log (i);
+		//Debug.Log (i);
 		return i;
 	}
 

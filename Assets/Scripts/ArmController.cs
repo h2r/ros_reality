@@ -47,11 +47,18 @@ public class ArmController : MonoBehaviour {
         string message = "";
         //Allows movement control with controllers if menu is disabled
 
+		if (arm == "right") {
+			//Debug.Log (transform.name);
+			//Debug.Log (transform.localPosition);
+			Debug.Log ("arm: " + GetComponent<Transform> ().position);
+			Debug.Log ("arm ros: " + outPos.x + " " + outPos.y + " " + outPos.z);
+		}
         //if deadman switch held in, move to new pose
         if (Input.GetAxis(grip_label) > 0.5f) {
             //construct message to move to new pose for the robot end effector 
             message = outPos.x + " " + outPos.y + " " + outPos.z + " " +
             outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+			
             //if touchpad is pressed (Crane game), incrementally move in new direction
         }
 

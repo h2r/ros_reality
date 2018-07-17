@@ -5,7 +5,6 @@ using UnityEngine;
 public class TablePos : MonoBehaviour {
 
     private GameObject head;
-	public float delta3;
 	private WebsocketClient wsc;
 	// Use this for initialization
 	void Start () {
@@ -15,14 +14,14 @@ public class TablePos : MonoBehaviour {
 
 		wsc.Advertise("/follow_vr_head", "std_msgs/String");
 
-		InvokeRepeating("MoveHead", .5f, .5f);
+		InvokeRepeating("MoveHead", 2f, 2f);
 	}
 
 	// Update is called once per frame
 	void MoveHead () {
 		head = GameObject.Find("Camera (eye)");
 		//Debug.Log (head.transform.position + Vector3.forward);
-		transform.position = head.transform.position + head.transform.forward*delta3;
+		//transform.position = head.transform.position + head.transform.forward*delta3;
 		transform.position = intersect_gaze_with_plane ();
 
 		Vector3 outPos = UnityToRosPositionAxisConversion(transform.position);

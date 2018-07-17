@@ -90,6 +90,10 @@ public class TrajectoryController : MonoBehaviour {
             Quaternion outQuat = UnityToRosRotationAxisConversion(lastArmRotation);
 
             message = outPos.x + " " + outPos.y + " " + outPos.z + " " + outQuat.x + " " + outQuat.y + " " + outQuat.z + " " + outQuat.w + " moveToEEPose";
+
+			if (arm == "left") {
+				Debug.Log ("left arm pos: " + message);
+			}
         }
         if (Input.GetAxis(trigger_label) > 0.5f) {
             message += " openGripper ";
@@ -98,7 +102,7 @@ public class TrajectoryController : MonoBehaviour {
             message += " closeGripper ";
         }
 
-        Debug.Log(message);
+        //Debug.Log(message);
         //Debug.Log(lastArmPosition);
     }
 

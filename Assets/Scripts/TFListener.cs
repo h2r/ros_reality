@@ -7,14 +7,16 @@ public class TFListener : MonoBehaviour
 
 
 	private WebsocketClient wsc;
+	public GameObject websocketgo;
 	public string topic = "ros_unity";
+	public GameObject myrobot;
 
     public float scale; //= 1f;
 
 	// Use this for initialization
 	void Start ()
 	{
-        wsc = GameObject.Find("WebsocketClient").GetComponent<WebsocketClient>();
+		wsc = websocketgo.GetComponent<WebsocketClient>(); //GameObject.Find("WebsocketClient"+gameObject.name[gameObject.name.Length-1]).GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", 0);
 
 		//Attach table stuff
@@ -34,7 +36,9 @@ public class TFListener : MonoBehaviour
             //Debug.Log(tfElement);
             //continue;
 			string[] dataPair = tfElement.Split (':');
-			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"); // replace with hashmap
+			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"+myrobot.GetComponent<GetRobotJoint>().num.ToString()); // replace with hashmap
+			//GameObject cur = transform.find (dataPair [0] + "Pivot"); // replace with hashmap
+			//GameObject cur = myrobot.GetComponent<GetRobotJoint>().getJoint(dataPair [0] + "Pivot");
 			if (cur != null) {
 
 				string[] tmp = dataPair [1].Split ('^'); //seperate position from rotation data
@@ -62,6 +66,10 @@ public class TFListener : MonoBehaviour
                 //Debug.Log(curPos);
 
                 cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion (curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
+				if (myrobot.GetComponent<GetRobotJoint> ().num.ToString () == "1") 
+				{
+					cur.transform.position += new Vector3 (1, 0, 1);
+				}
                 cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion (curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
 				if (!cur.name.Contains("kinect")) { //rescaling direction of kinect point cloud
 					cur.transform.localScale = new Vector3(scale, scale, scale);

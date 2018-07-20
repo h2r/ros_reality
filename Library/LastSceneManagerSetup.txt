@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/TrajectoryControl.unity
+- path: Assets/Scenes/PositionControl.unity
   isLoaded: 1
   isActive: 1

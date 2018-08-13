@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class RadialMenu : MonoBehaviour {
 
+    public WebsocketClient wsc;
+
     private SteamVR_TrackedController controller;
     private DepthRosGeometryView drgv;
     private float timeOfLastPress;
@@ -13,7 +15,7 @@ public class RadialMenu : MonoBehaviour {
     // Use this for initialization
     void Start () {
         controller = GetComponent<SteamVR_TrackedController>();
-        drgv = GameObject.Find("kinect2_linkPivot").GetComponent<DepthRosGeometryView>();
+        drgv = GameObject.Find("kinect2_linkPivot"+).GetComponent<DepthRosGeometryView>();
         timeOfLastPress = Time.time;
     }
 	

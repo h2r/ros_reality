@@ -11,11 +11,14 @@ public class WebsocketClient : MonoBehaviour {
     private bool connected = false;
     public Dictionary<string, string> messages = new Dictionary<string, string>();
     public string ip_address;
+    public string ID;
 
     // Connect happens in Awake so it is finished before other GameObjects are made
     void Awake() {
         Debug.Log("instantiating websocket");
         ws = new WebSocket(ip_address);
+        if (ip_address == "192.168.160.211:9090") ID = "1";
+        if (ip_address == "192.168.160.210:9090") ID = "2";
 
         ws.OnOpen += OnOpenHandler;
         ws.OnMessage += OnMessageHandler;

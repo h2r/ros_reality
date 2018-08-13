@@ -16,9 +16,10 @@ public class TFListener : MonoBehaviour
 	// Use this for initialization
 	void Start ()
 	{
+        // get the websocket from the inspector
 		wsc = websocketgo.GetComponent<WebsocketClient>(); //GameObject.Find("WebsocketClient"+gameObject.name[gameObject.name.Length-1]).GetComponent<WebsocketClient>();
 		wsc.Subscribe (topic, "std_msgs/String", 0);
-
+        print("TF Listener script called: "+wsc.ip_address);
 		//Attach table stuff
 		//GameObject basePivot = GameObject.Find ("basePivot"); // replace with hashmap
 		//GameObject table = GameObject.Find ("Table");
@@ -33,10 +34,13 @@ public class TFListener : MonoBehaviour
 		string[] tfElements = message.Split (';'); //split the message into each joint/link data pair
         //Debug.Log(string.Join(", ", tfElements));
         foreach (string tfElement in tfElements) {
-            //Debug.Log(tfElement);
+            Debug.Log(tfElement);
             //continue;
+            //print(tfElement.Split(':'));
 			string[] dataPair = tfElement.Split (':');
-			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"+myrobot.GetComponent<GetRobotJoint>().num.ToString()); // replace with hashmap
+            //print("?: "+myrobot.GetComponent<GetRobotJoint>().num.ToString());
+            //print(dataPair[0] + "Pivot" + myrobot.GetComponent<GetRobotJoint>().num.ToString());
+			GameObject cur = GameObject.Find (dataPair [0] + "Pivot"); // replace with hashmap
 			//GameObject cur = transform.find (dataPair [0] + "Pivot"); // replace with hashmap
 			//GameObject cur = myrobot.GetComponent<GetRobotJoint>().getJoint(dataPair [0] + "Pivot");
 			if (cur != null) {
@@ -66,10 +70,10 @@ public class TFListener : MonoBehaviour
                 //Debug.Log(curPos);
 
                 cur.transform.position = Vector3.Lerp(scale * RosToUnityPositionAxisConversion (curPos), cur.transform.position, 0.7f); //convert ROS coordinates to Unity coordinates and scale for position vector
-				if (myrobot.GetComponent<GetRobotJoint> ().num.ToString () == "1") 
-				{
+				//if (myrobot.GetComponent<GetRobotJoint> ().num.ToString () == "1") 
+				//{
 					cur.transform.position += new Vector3 (1, 0, 1);
-				}
+				//}
                 cur.transform.rotation = Quaternion.Slerp(RosToUnityQuaternionConversion (curRot), cur.transform.rotation, 0.7f); //convert ROS quaternions to Unity quarternions
 				if (!cur.name.Contains("kinect")) { //rescaling direction of kinect point cloud
 					cur.transform.localScale = new Vector3(scale, scale, scale);

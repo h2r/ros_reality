@@ -1,0 +1,4 @@
+8/14/18:
+- controller not adjusting point field
+- iorek URDF not being updated in scene
+- winnie model moving when hit play in scene

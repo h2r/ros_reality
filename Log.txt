@@ -1,4 +1,10 @@
 8/14/18:
+Want:
+- one kinect displaying entire scene
+- 2 people can be in the same scene
+- each view can see its own controllers as well as the other person's head and controllers
+- one person controls the grippers and arms on one robot; other person opposite
+Problems:
 - controller not adjusting point field
-- iorek URDF not being updated in scene
+- both URDFs not being updated in scene
 - winnie model moving when hit play in scene

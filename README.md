@@ -1,5 +1,6 @@
 # ROS Reality
 
+#NOTE TO IROS VISITORS: I'M CURRENTLY UPDATING THE CODE. CHECK BACK OCT 4!
 Hi! Welcome to ROS Reality, a package made by the [Humans to Robots Lab](http://h2r.cs.brown.edu/) at [Brown](https://en.wikipedia.org/wiki/Brown) University. This package connects a ROS network to a Unity scene over the internet, passing messages back and forth. We also wrote a C# [URDF](http://wiki.ros.org/urdf) parser, which you can find demoed in the provided scenes. We built this package for displaying and controlling a Baxter robot with a virtual reality headset, so the package is geared towards that, but the pacakge could be used for any project that needs a connection between ROS and Unity.
 
 ## Dependencies

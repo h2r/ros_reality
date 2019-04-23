@@ -1,6 +1,4 @@
-# ROS Reality LEGACY
-
-# NOTE: This is now legacy code, please visit: https://github.com/h2r/ros_reality for the new codebase
+# ROS Reality
 
 ## If you'd like to cite ROS Reality, see this paper:
 
